@@ -1,0 +1,208 @@
+/* ====== HALAMAN BAJU CARI ====== */
+
+/* Umum */
+body {
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  background: #fafafa;
+  color: #333;
+}
+
+h1, h3, h4 {
+  margin: 0;
+}
+
+/* Header Section */
+.page-header {
+  position: relative;
+  text-align: center;
+  background: url('../images/bg-baju-anakl.jpg') center/cover no-repeat;
+  padding: 70px 20px;
+  color: #fff;
+}
+
+.page-header .overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.page-header .header-content {
+  position: relative;
+  z-index: 2;
+}
+
+.page-header h1 {
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.breadcrumb {
+  list-style: none;
+  padding: 0;
+  margin-top: 10px;
+  display: inline-flex;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.breadcrumb li a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.breadcrumb li::after {
+  content: "›";
+  margin: 0 5px;
+  color: #ddd;
+}
+
+.breadcrumb li:last-child::after {
+  content: "";
+}
+
+/* Layout utama */
+.listing-container {
+  display: flex;
+  gap: 30px;
+  max-width: 1200px;
+  margin: 50px auto;
+  padding: 0 20px;
+}
+
+/* Konten utama */
+.main-content {
+  flex: 3;
+}
+
+.result-info {
+  margin-bottom: 20px;
+  font-weight: 500;
+}
+
+.product-card {
+  display: flex;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
+  transition: transform 0.2s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+}
+
+.product-image img {
+  width: 180px;
+  height: auto;
+  object-fit: cover;
+}
+
+.product-info {
+  padding: 15px;
+}
+
+.product-info h3 a {
+  color: #333;
+  text-decoration: none;
+}
+
+.price {
+  color: #777;
+  margin: 8px 0;
+}
+
+.btn {
+  background-color: #0077cc;
+  color: #fff;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  background-color: #005fa3;
+}
+
+/* Sidebar */
+.sidebar {
+  flex: 1.2;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.sidebar-box {
+  background: #fff;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+}
+
+.sidebar-box h4 {
+  margin-bottom: 12px;
+  font-size: 18px;
+  border-left: 4px solid #0077cc;
+  padding-left: 8px;
+}
+
+.sidebar-box form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sidebar-box select {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.recent-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.recent-list li {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.recent-list img {
+  width: 60px;
+  height: 60px;
+  border-radius: 6px;
+  margin-right: 10px;
+  object-fit: cover;
+}
+
+.recent-title {
+  font-weight: 500;
+}
+
+.recent-price {
+  font-size: 14px;
+  color: #666;
+}
+
+/* Responsif */
+@media (max-width: 768px) {
+  .listing-container {
+    flex-direction: column;
+  }
+  .product-card {
+    flex-direction: column;
+    align-items: center;
+  }
+  .product-image img {
+    width: 100%;
+  }
+}
