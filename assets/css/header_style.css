@@ -1,0 +1,198 @@
+/* --- RESET DASAR --- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul {
+  list-style: none;
+}
+
+/* --- HEADER (PUTIH) --- */
+.site-header {
+  background-color: #fff; /* dari hitam -> putih */
+  color: #000;            /* teks berubah hitam */
+  width: 100%;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* --- WRAPPER DALAM --- */
+.wrapper.header-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0.7rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* --- BRAND --- */
+.site-brand {
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #1e90ff; 
+  transition: 0.3s;
+}
+
+/* --- NAV --- */
+.nav a {
+  color: #333; /* dari #ddd -> lebih gelap karena background putih */
+  font-weight: 600;
+  padding: 0.5rem;
+  transition: color 0.3s;
+}
+
+.nav a:hover {
+  color: #1e90ff; /* tetap biru */
+}
+
+/* --- DROPDOWN MENU --- */
+.has-dropdown {
+  position: relative;
+}
+
+.has-dropdown .dropdown {
+  display: none;
+  position: absolute;
+  background-color: #fff; /* dari #222 -> putih */
+  padding: 0.5rem 0;
+  top: 120%;
+  left: 0;
+  min-width: 180px;
+  border-radius: 6px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
+}
+
+.has-dropdown:hover .dropdown {
+  display: block;
+}
+
+.dropdown li a {
+  display: block;
+  padding: 0.5rem 1rem;
+  color: #000; /* dari putih -> hitam */
+  transition: background 0.3s;
+}
+
+.dropdown li a:hover {
+  background-color: #1e90ff;
+  color: #fff; /* hover tetap putih */
+}
+
+/* --- LOGIN / USER AREA --- */
+.user-area {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.btn.btn-secondary {
+  background-color: #1e90ff; /* tetap biru */
+  color: #fff;               /* tetap putih */
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-weight: 600;
+  transition: background-color 0.3s;
+}
+
+.btn.btn-secondary:hover {
+  background-color: #0d6efd; /* biru tua tetap */
+}
+
+/* --- USER DROPDOWN --- */
+.user-dropdown {
+  position: relative;
+}
+
+.user-btn {
+  background: none;
+  border: none;
+  color: #000; /* sebelumnya putih -> hitam */
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+.user-dropdown .dropdown {
+  display: none;
+  position: absolute;
+  right: 0;
+  background-color: #fff; /* dari #222 -> putih */
+  border-radius: 6px;
+  margin-top: 0.5rem;
+  min-width: 180px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+}
+
+.user-dropdown:hover .dropdown {
+  display: block;
+}
+
+.user-dropdown .dropdown li a {
+  display: block;
+  padding: 0.6rem 1rem;
+  color: #000; /* dari putih -> hitam */
+}
+
+.user-dropdown .dropdown li a:hover {
+  background-color: #1e90ff;
+  color: #fff; /* hover tetap putih */
+}
+
+/* --- TOGGLE UNTUK MOBILE --- */
+.nav-toggle {
+  display: none;
+  font-size: 1.6rem;
+  background: none;
+  border: none;
+  color: #000; /* tombol hamburger jadi hitam */
+  cursor: pointer;
+}
+
+/* --- RESPONSIVE MODE --- */
+@media (max-width: 768px) {
+  .nav ul {
+    display: none;
+    flex-direction: column;
+    background-color: #fff; /* menu mobile putih */
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    padding: 1rem 0;
+    gap: 1rem;
+  }
+
+  .nav.active ul {
+    display: flex;
+  }
+
+  .nav ul a {
+    color: #000; /* link jadi hitam */
+  }
+
+  .nav-toggle {
+    display: block;
+  }
+
+  .user-area {
+    display: none;
+  }
+}
+
+/* --- FORCE OVERRIDE SEMUA CSS LAIN --- */
+.site-header {
+    background-color: white !important;
+    color: black !important;
+}
