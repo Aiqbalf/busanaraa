@@ -1,0 +1,239 @@
+/* === index.php === */
+/* === Reset ringan === */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html,body { height: 100%; font-family: "Lato", Arial, sans-serif; color: #222; }
+
+/* === Wrapper umum === */
+.wrapper { width: 92%; max-width: 1200px; margin: 0 auto; }
+
+/* === Header placeholder (jika header.php tidak styling) === */
+header.site-header {
+  background: #111;
+  color: #fff;
+  padding: 12px 0;
+}
+.header-inner { display:flex; align-items:center; justify-content:space-between; gap:10px; }
+.site-brand { font-weight:700; font-size:20px; color:#fff; text-decoration:none; }
+.nav { display:flex; gap:14px; align-items:center; }
+.nav a { color:#fff; text-decoration:none; font-weight:600; padding:8px 10px; border-radius:6px; }
+.nav a:hover { background: rgba(255,255,255,0.06); }
+
+/* === Banner === */
+.banner-section {
+  position: relative;
+  overflow: hidden;
+  background: #b7d7f8;
+  color: #222;
+  padding: 30px 0 40px;
+}
+.banner-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  align-items: center;
+  min-height: 360px;
+}
+.banner-img { width: 100%; height: 100%; object-fit: cover; border-radius: 8px; box-shadow: 0 6px 18px rgba(0,0,0,0.25); }
+.banner-content { text-align: right; padding: 20px; max-width: 520px; }
+.banner-content h1 { font-size: 42px; line-height: 1.05; margin-bottom: 14px; color: #222; text-transform: uppercase; letter-spacing: 0.5px; }
+.banner-content p { color: #222; margin-bottom: 18px; }
+.btn { display:inline-block; text-decoration:none; padding: 10px 18px; border-radius:8px; font-weight:700; }
+.btn-primary { background: #1e90ff; color:#fff; box-shadow: 0 6px 16px rgba(25,130,196,0.18); }
+.btn-primary:hover { transform: translateY(-2px); transition: all .18s ease; }
+.btn-secondary { background: #f5f5f5; color: #333; border: 1px solid #e0e0e0; }
+
+/* === Section === */
+.section { padding: 42px 0; }
+.section-products .section-header { text-align: left; margin-bottom: 18px; }
+.section-header h2 { font-size: 28px; margin-bottom: 6px; }
+.muted { color: #666; }
+
+/* === Products grid === */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.product-card {
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 8px 22px rgba(9,30,63,0.06);
+  display: flex;
+  flex-direction: column;
+}
+.product-thumb img { width:100%; height:210px; object-fit:cover; display:block; }
+.product-body { padding: 14px; display:flex; flex-direction:column; gap:8px; flex:1; }
+.product-title { font-size:18px; margin-bottom:2px; }
+.product-title a { color: #111; text-decoration:none; }
+.product-price { color: #1e90ff; font-weight:700; }
+.product-desc { color: #555; font-size: 14px; margin-top:6px; flex:1; }
+.product-actions { display:flex; gap:8px; margin-top:8px; }
+
+/* Info when no data */
+.info { padding: 18px; text-align:center; color:#666; }
+
+/* === Responsive === */
+@media (max-width: 1000px) {
+  .banner-inner { grid-template-columns: 1fr; text-align: center; }
+  .banner-content { text-align: center; }
+  .products-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 640px) {
+  .products-grid { grid-template-columns: 1fr; }
+  .banner-content h1 { font-size: 28px; }
+  .banner-img { height: 200px; }
+}
+
+/* small utilities */
+.text-right { text-align: right; }
+.mr-sm { margin-right: 8px; }
+.hidden { display:none; }
+/* === index.php === */
+
+
+
+/* === Penting/header.php === */
+.site-header {
+  background: #111;
+  color: #fff;
+  padding: 12px 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.site-brand {
+  color: #fff;
+  font-size: 22px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+/* Navigasi utama */
+.nav ul {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.nav a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 8px 10px;
+  border-radius: 6px;
+}
+
+.nav a:hover {
+  background: rgba(255,255,255,0.1);
+}
+
+/* Dropdown */
+.has-dropdown {
+  position: relative;
+}
+
+.has-dropdown .dropdown {
+  position: absolute;
+  top: 38px;
+  left: 0;
+  background: #222;
+  border-radius: 6px;
+  min-width: 160px;
+  display: none;
+  flex-direction: column;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+}
+
+.has-dropdown:hover .dropdown {
+  display: flex;
+}
+
+.dropdown a {
+  color: #fff;
+  padding: 10px 12px;
+}
+
+.dropdown a:hover {
+  background: #333;
+}
+
+/* User area */
+.user-area {
+  position: relative;
+}
+
+.user-btn {
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.user-dropdown {
+  position: relative;
+}
+
+.user-dropdown .dropdown {
+  position: absolute;
+  right: 0;
+  top: 34px;
+  background: #222;
+  border-radius: 6px;
+  display: none;
+  flex-direction: column;
+  min-width: 160px;
+}
+
+.user-dropdown:hover .dropdown {
+  display: flex;
+}
+
+/* Toggle untuk mobile */
+.nav-toggle {
+  display: none;
+  background: transparent;
+  color: #fff;
+  font-size: 26px;
+  border: none;
+  cursor: pointer;
+}
+
+/* Responsive */
+@media (max-width: 860px) {
+  .nav-toggle {
+    display: block;
+  }
+  .nav {
+    position: absolute;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    background: #111;
+    flex-direction: column;
+    display: none;
+  }
+  .nav.open {
+    display: flex;
+  }
+  .nav ul {
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px 0;
+  }
+  .has-dropdown .dropdown {
+    position: static;
+    box-shadow: none;
+  }
+}
+/* === Penting/header.php === */
