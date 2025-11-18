@@ -1,0 +1,233 @@
+/* ===========================
+   STYLING: BAJU yang di kategori 
+=========================== */
+
+/* ---- Global ---- */
+body {
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  background-color: #f9f9f9;
+  color: #333;
+}
+
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+h1, h5 {
+  margin: 0;
+}
+
+/* ---- Page Header ---- */
+.page-header {
+  background-color: #222;
+  color: #fff;
+  padding: 50px 0;
+  position: relative;
+  text-align: center;
+}
+
+.page-header h1 {
+  font-size: 26px;
+  font-weight: 600;
+  z-index: 2;
+  position: relative;
+}
+
+.coustom-breadcrumb {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0 0 0;
+  display: inline-flex;
+  gap: 10px;
+  z-index: 2;
+  position: relative;
+  font-size: 14px;
+}
+
+.coustom-breadcrumb li a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.coustom-breadcrumb li::after {
+  content: "›";
+  margin-left: 10px;
+  color: #fff;
+}
+
+.coustom-breadcrumb li:last-child::after {
+  content: "";
+}
+
+/* ---- Layout Grid ---- */
+.listing-page .row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 25px;
+  margin-top: 40px;
+}
+
+.col-md-9 {
+  flex: 3;
+}
+
+.col-md-3 {
+  flex: 1;
+}
+
+/* ---- Produk Card ---- */
+.product-listing-m {
+  display: flex;
+  align-items: center;
+  background-color: #f2f2f2;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+  transition: background-color 0.3s ease;
+}
+
+.product-listing-m:hover {
+  background-color: #e8e8e8;
+}
+
+.product-listing-img img {
+  width: 220px;
+  height: auto;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.product-listing-content {
+  margin-left: 25px;
+}
+
+.product-listing-content h5 a {
+  text-decoration: none;
+  color: #111;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.product-listing-content .list-price {
+  font-size: 16px;
+  color: #333;
+  font-weight: 500;
+  margin: 8px 0 15px 0;
+}
+
+/* ---- Tombol ---- */
+.btn {
+  display: inline-block;
+  padding: 10px 18px;
+  background-color: #1e88e5;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  background-color: #1565c0;
+}
+
+/* ---- Sidebar ---- */
+.sidebar_widget {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 30px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.widget_heading h5 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #111;
+}
+
+/* Filter Form */
+.sidebar_filter select,
+.sidebar_filter button {
+  width: 100%;
+  padding: 10px;
+  font-size: 15px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.sidebar_filter button {
+  background-color: #1e88e5;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  margin-top: 10px;
+}
+
+.sidebar_filter button:hover {
+  background-color: #1565c0;
+}
+
+/* ---- Baju Terbaru ---- */
+.recent_addedcars ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.recent_addedcars li {
+  display: flex;
+  align-items: center;
+  background-color: #f5f5f5;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+}
+
+.recent_addedcars li:hover {
+  background-color: #e9e9e9;
+}
+
+.recent_post_img img {
+  width: 60px;
+  height: 60px;
+  border-radius: 5px;
+  margin-right: 10px;
+  object-fit: cover;
+}
+
+.recent_post_title a {
+  text-decoration: none;
+  color: #111;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.widget_price {
+  font-size: 14px;
+  color: #444;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 768px) {
+  .listing-page .row {
+    flex-direction: column;
+  }
+  .product-listing-m {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .product-listing-img img {
+    width: 100%;
+    margin-bottom: 15px;
+  }
+  .product-listing-content {
+    margin-left: 0;
+  }
+}

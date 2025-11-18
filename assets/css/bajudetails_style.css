@@ -1,0 +1,166 @@
+/* ====== Layout Utama ====== */
+body {
+  font-family: 'Poppins', sans-serif;
+  background: #fafafa;
+  margin: 0;
+  padding: 0;
+  color: #333;
+}
+
+.baju-detail-container {
+  max-width: 1100px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+/* ====== Slider Gambar ====== */
+.image-slider {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+}
+
+.image-slider img {
+  width: 250px;
+  border-radius: 10px;
+  transition: transform 0.3s ease;
+}
+
+.image-slider img:hover {
+  transform: scale(1.05);
+}
+
+/* ====== Info Produk ====== */
+.baju-info {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.baju-info h2 {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.harga {
+  font-size: 22px;
+  font-weight: 700;
+  color: #007bff;
+}
+
+.harga span {
+  font-size: 14px;
+  color: #555;
+}
+
+/* ====== Deskripsi ====== */
+.baju-deskripsi {
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  margin-bottom: 40px;
+}
+
+.tab {
+  background: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 8px 8px 0 0;
+  padding: 10px 20px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.tab.aktif {
+  background: #007bff;
+}
+
+#kontenDeskripsi {
+  padding: 15px;
+}
+
+/* ====== Sidebar ====== */
+.sidebar {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  padding: 20px;
+  text-align: center;
+  max-width: 300px;
+  margin: 0 auto 40px;
+}
+
+.sidebar h4 {
+  margin-bottom: 20px;
+}
+
+.btn-sewa,
+.btn-login {
+  display: inline-block;
+  background: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.btn-sewa:hover,
+.btn-login:hover {
+  background: #0056b3;
+}
+
+/* ====== Produk Serupa ====== */
+.produk-serupa {
+  margin-top: 40px;
+}
+
+.produk-serupa h3 {
+  font-size: 22px;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.produk-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 20px;
+}
+
+.produk-item {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  text-align: center;
+  padding: 15px;
+  transition: transform 0.3s;
+}
+
+.produk-item:hover {
+  transform: translateY(-5px);
+}
+
+.produk-item img {
+  width: 150px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.btn-lihat {
+  display: inline-block;
+  background: #007bff;
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.btn-lihat:hover {
+  background: #0056b3;
+}
