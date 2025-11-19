@@ -1,0 +1,82 @@
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: #f7f7f7;
+  margin: 0;
+  padding: 0;
+}
+
+.register-container {
+  max-width: 900px; /* sebelumnya mungkin 500px */
+  margin: 50px auto;
+  background: #fff;
+  padding: 40px 60px;
+  border-radius: 15px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+}
+
+.register-container h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #333;
+}
+
+.register-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.register-container input[type="text"],
+.register-container input[type="email"],
+.register-container input[type="number"],
+.register-container input[type="password"] {
+  width: 100%;
+  padding: 14px 18px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 15px;
+  transition: all 0.3s ease;
+}
+
+.register-container input:focus {
+  border-color: #1e88e5;
+  outline: none;
+  box-shadow: 0 0 5px rgba(106,27,154,0.3);
+}
+
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: #555;
+}
+
+.checkbox-container input {
+  margin-right: 10px;
+}
+
+.btn-register {
+  background-color: #1e88e5;
+  color: #fff;
+  border: none;
+  padding: 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: 0.3s ease;
+}
+
+.btn-register:hover {
+  background-color: #1565c0;
+}
+
+.footer-link {
+  text-align: center;
+  font-size: 14px;
+}
+
+.footer-link a {
+  color: #1e88e5;
+  text-decoration: none;
+  font-weight: 600;
+}
