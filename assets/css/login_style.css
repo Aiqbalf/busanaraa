@@ -1,0 +1,98 @@
+/* Login Page Styling */
+body {
+  font-family: 'Poppins', sans-serif;
+  background: #ddd;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.login-page {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-container {
+  background: #fff;
+  padding: 40px 50px;
+  border-radius: 16px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+  animation: fadeInUp 0.6s ease;
+}
+
+.login-container h2 {
+  margin-bottom: 25px;
+  color: #2c3e50;
+  font-weight: 600;
+  font-size: 24px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.form-group label {
+  display: block;
+  color: #555;
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  outline: none;
+  transition: border-color 0.3s;
+  font-size: 15px;
+}
+
+.form-group input:focus {
+  border-color: #2c3e50;
+}
+
+button[type="submit"] {
+  width: 100%;
+  padding: 12px;
+  background: #0077cc;
+  color: #fff;
+  font-size: 16px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+button[type="submit"]:hover {
+  background: #005fa3;
+}
+
+.register-link {
+  margin-top: 20px;
+  color: #041a29;
+  font-size: 14px;
+}
+
+.register-link a {
+  color: #0077cc;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.register-link a:hover {
+  text-decoration: underline;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
