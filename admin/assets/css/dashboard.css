@@ -1,0 +1,128 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* Layout */
+.dashboard-layout {
+    display: flex;
+    min-height: 100vh;
+    background: #eef2f6;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 240px;
+    background: #1e40af;
+    color: white;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+}
+
+.sidebar-brand {
+    padding: 20px;
+    text-align: center;
+    font-size: 22px;
+    font-weight: bold;
+    background: #1e3a8a;
+}
+
+.sidebar-menu {
+    list-style: none;
+    margin-top: 10px;
+}
+
+.sidebar-menu li a {
+    display: block;
+    padding: 14px 20px;
+    color: white;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    transition: 0.2s;
+    font-size: 14px;
+}
+
+.sidebar-menu li a:hover {
+    background: rgba(255,255,255,0.15);
+    padding-left: 25px;
+}
+
+.sidebar-menu .logout a {
+    background: #dc2626;
+    margin-top: 20px;
+}
+
+/* Content */
+.dashboard-content {
+    margin-left: 240px;
+    padding: 25px;
+    width: 100%;
+}
+
+/* Header */
+.page-header {
+    margin-bottom: 25px;
+}
+
+.page-header h1 {
+    font-size: 26px;
+    color: #111827;
+}
+
+.page-header p {
+    color: #6b7280;
+    font-size: 14px;
+}
+
+/* Cards */
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+}
+
+.stat-card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.stat-text span {
+    font-size: 13px;
+    color: #6b7280;
+}
+
+.stat-text h2 {
+    margin: 8px 0;
+    font-size: 32px;
+}
+
+.stat-text a {
+    font-size: 13px;
+    text-decoration: none;
+    color: #2563eb;
+    font-weight: bold;
+}
+
+/* Icon */
+.stat-icon {
+    font-size: 34px;
+}
+
+/* Card colors */
+.warning { border-left: 5px solid #f59e0b; }
+.info    { border-left: 5px solid #3b82f6; }
+.orange  { border-left: 5px solid #fb923c; }
+.purple  { border-left: 5px solid #8b5cf6; }
+.success { border-left: 5px solid #22c55e; }
+.primary { border-left: 5px solid #0ea5e9; }
+.blue    { border-left: 5px solid #2563eb; }
+.gray    { border-left: 5px solid #9ca3af; }
