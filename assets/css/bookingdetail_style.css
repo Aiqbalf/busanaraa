@@ -1,0 +1,82 @@
+body {
+    background: #f4f4f4;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 480px;
+    margin: auto;
+}
+
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 18px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.success-box {
+    text-align: center;
+}
+
+.success-icon {
+    width: 90px;
+    margin-bottom: 10px;
+}
+
+.gray {
+    color: gray;
+}
+
+.count-box {
+    text-align: center;
+}
+
+.countdown {
+    font-size: 32px;
+    font-weight: bold;
+    margin-top: 10px;
+    color: #ff4444;
+}
+
+.label {
+    font-size: 14px;
+    color: gray;
+    margin: 2px 0;
+}
+
+.value {
+    font-size: 18px;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.code {
+    font-size: 20px;
+}
+
+.harga {
+    color: #2c7a2c;
+}
+
+.btn-selesai {
+    display: block;
+    text-align: center;
+    padding: 12px;
+    background: #2e7dff;
+    color: white;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.btn-selesai:hover {
+    background: #1f5ed1;
+}
+
+.button-wrapper {
+    margin-top: 20px;
+}
