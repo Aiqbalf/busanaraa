@@ -21,9 +21,10 @@ $pagedesc = 'Laporan - Busanara';
     <title><?php echo $pagedesc;?></title>
 
     <!-- Bootstrap 5 CDN -->
+     <link rel="stylesheet" href="assets/css/leftbar.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
+    
 
 	
     <style>
@@ -133,100 +134,10 @@ $pagedesc = 'Laporan - Busanara';
     </script>
 </head>
 <body>
-    <!-- Sidebar -->
-    <aside class="sidebar">
-        <div class="brand ps-3">
-            <div style="display:flex;align-items:center;gap:10px">
-                <div style="width:36px;height:36px;background:#fff;border-radius:6px"></div>
-                <div>
-                    <div style="font-weight:800">Busanara</div>
-                    <div style="font-size:12px;opacity:0.9">Sewa Baju</div>
-                </div>
-            </div>
-        </div>
-
-        <nav class="nav flex-column mt-4">
-             <a class="nav-link text-white mb-2" href="dashboard.php">
-        <i class="fa fa-tachometer-alt me-2"></i> Dashboard
-    </a>
-
-<!-- Tombol induk (bisa buka/tutup) -->
-<a class="nav-link text-white mb-2" 
-   data-bs-toggle="collapse" 
-   href="#menuSewa" 
-   role="button" 
-   aria-expanded="false">
-    <i class="fa fa-shopping-cart me-2"></i> Data Sewa
-    <i class="fa fa-chevron-down float-end mt-1"></i>
-</a>
-
-<!-- Submenu -->
-<div class="collapse ps-3" id="menuSewa">
-	<a class="nav-link text-white mb-1" href="sewa.php">
-    <i class="fa fa-list me-2"></i> Semua Sewa
-	</a>
-    </a>
-    <a class="nav-link text-white mb-1" href="sewa_bayar.php">
-        <i class="fa fa-money-bill me-2"></i> Pembayaran Sewa
-    </a>
-    <a class="nav-link text-white mb-1" href="sewa_konfirmasi.php">
-        <i class="fa fa-check-circle me-2"></i> Konfirmasi Sewa
-    </a>
-    <a class="nav-link text-white mb-1" href="sewa_kembali.php">
-        <i class="fa fa-undo me-2"></i> Pengembalian Sewa
-    </a>
-</div>
 
 
+<?php include('penting/leftbar.php'); ?>
 
-    <a class="nav-link text-white mb-2" href="jenis.php">
-        <i class="fa fa-tag me-2"></i> Jenis Baju
-    </a>
-    <a class="nav-link text-white mb-2" href="baju.php">
-        <i class="fa fa-tshirt me-2"></i> Daftar Baju
-    </a>
-
-	
-    <a class="nav-link text-white mb-2" href="reg-users.php">
-        <i class="fa fa-users me-2"></i> Member
-    </a>
-
-
-    <a class="nav-link text-white mb-2" href="manage-conactusquery.php">
-        <i class="fa fa-phone me-2"></i> Menghubungi
-    </a>
-
-
-    <a class="nav-link text-white mb-2" href="manage-pages.php">
-        <i class="fa fa-cog me-2"></i> Kelola Halaman
-    </a>
-
-    <!-- Kontak Info -->
-    <a class="nav-link text-white mb-2" href="update-contactinfo.php">
-        <i class="fa fa-address-book me-2"></i> Kontak Info
-    </a>
-
-
-    <a class="nav-link text-white mb-2" href="laporan.php">
-        <i class="fa fa-file-alt me-2"></i> Laporan Sewa
-    </a>
-        </nav>
-    </aside>
-
-    <!-- Topbar -->
-    <header class="topbar">
-        <div style="flex:1">
-            <h5 style="margin:0">Dashboard Administrator</h5>
-        </div>
-        <div style="display:flex;align-items:center;gap:18px">
-            <div class="d-none d-md-block"><input class="form-control form-control-sm" style="width:240px;border-radius:999px;padding-left:12px" placeholder="Cari..."></div>
-            <div><i class="fa-regular fa-bell"></i></div>
-            <div style="display:flex;align-items:center;gap:10px">
-                <img src="img/user.png" alt="user" style="width:36px;height:36px;border-radius:999px;object-fit:cover">
-                <small class="text-muted">admin@busanara.com</small>
-            </div>
-        </div>
-    </header>
 
     <main class="content">
         <div class="mb-4">
