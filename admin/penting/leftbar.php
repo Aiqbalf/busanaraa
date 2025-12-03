@@ -37,7 +37,7 @@
                 <span class="arrow">▾</span>
             </div>
             <ul class="dropdown-menu">
-                <li><a href="jenis.php">Data Jenis</a></li>
+                <li><a href="jenis_baju.php">Data Jenis</a></li>
                 <li><a href="baju.php">Data Baju</a></li>
             </ul>
         </li>
