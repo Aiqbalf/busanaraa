@@ -21,6 +21,7 @@ $pagedesc = "Dashboard Administrator";
     <!-- CSS -->
     <link rel="stylesheet" href="assets/css/dashboard.css">
 	<link rel="stylesheet" href="assets/css/leftbar.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
@@ -37,6 +38,32 @@ $pagedesc = "Dashboard Administrator";
             <h1>Dashboard</h1>
             <p>Ringkasan sistem sewa baju Busanara</p>
         </div>
+
+        <!-- CHART CONTAINER -->
+<div class="charts-container" style="margin-bottom:25px; display:flex; gap:20px;">
+
+    <div class="chart-box" style="
+        background:white; 
+        padding:20px; 
+        border-radius:15px; 
+        box-shadow:0 4px 12px rgba(0,0,0,0.1);
+        flex:1;">
+        <h3 style="margin-bottom:10px;">Top 5 Baju Paling Banyak Disewa</h3>
+        <canvas id="barChart"></canvas>
+    </div>
+
+    <div class="chart-box" style="
+        background:white; 
+        padding:20px; 
+        border-radius:15px; 
+        box-shadow:0 4px 12px rgba(0,0,0,0.1);
+        flex:1;">
+        <h3 style="margin-bottom:10px;">Penyewaan Baju per Bulan</h3>
+        <canvas id="lineChart"></canvas>
+    </div>
+
+</div>
+
 
         <?php
         $bayar  = mysqli_num_rows(mysqli_query($koneksidb, "SELECT * FROM booking WHERE status='Menunggu Pembayaran'"));
@@ -131,3 +158,48 @@ $pagedesc = "Dashboard Administrator";
 
 </body>
 </html>
+
+<script>
+fetch("chart_data.php")
+    .then(response => response.json())
+    .then(data => {
+
+        // ============================
+        // BAR CHART - TOP 5 BAJU
+        // ============================
+        const barLabels = data.top_baju.map(item => item.nama);
+        const barData = data.top_baju.map(item => item.total);
+
+        new Chart(document.getElementById("barChart"), {
+            type: "bar",
+            data: {
+                labels: barLabels,
+                datasets: [{
+                    label: "Jumlah Sewa",
+                    data: barData,
+                    borderWidth: 2
+                }]
+            }
+        });
+
+        // ============================
+        // LINE CHART - PER BULAN
+        // ============================
+        const lineLabels = data.per_bulan.map(item => item.bulan);
+        const lineData = data.per_bulan.map(item => item.total);
+
+        new Chart(document.getElementById("lineChart"), {
+            type: "line",
+            data: {
+                labels: lineLabels,
+                datasets: [{
+                    label: "Penyewaan",
+                    data: lineData,
+                    tension: 0.3,
+                    borderWidth: 2
+                }]
+            }
+        });
+
+    });
+</script>
