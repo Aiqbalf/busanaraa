@@ -1,0 +1,88 @@
+/* ====== Tampilan Riwayat Sewa ====== */
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: #f8f9fb;
+  margin: 0;
+  padding: 0;
+  color: #333;
+}
+
+.riwayat-container {
+  max-width: 1100px;
+  margin: 50px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.riwayat-container h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 28px;
+  font-weight: 700;
+  color: #222;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+}
+
+thead {
+  background-color: #222;
+  color: white;
+}
+
+th, td {
+  padding: 14px 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+tbody tr:hover {
+  background-color: #e6f0ff;
+  transition: background 0.3s ease;
+}
+
+.no-data {
+  text-align: center;
+  padding: 20px;
+  color: #888;
+}
+
+.opsi {
+  text-align: center;
+}
+
+a.upload {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: 500;
+  display: block;
+  margin-top: 5px;
+}
+
+a.upload:hover {
+  text-decoration: underline;
+}
+
+a.lihat {
+  font-size: 18px;
+  color: #333;
+  margin-right: 8px;
+  text-decoration: none;
+}
+
+a.lihat:hover {
+  color: #007bff;
+}

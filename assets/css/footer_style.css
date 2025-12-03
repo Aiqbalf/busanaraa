@@ -1,5 +1,5 @@
 footer {
-  background-color: #111;
+  background-color: #b7d7f8;
   color: #ccc;
   font-family: 'Poppins', sans-serif;
   margin-top: 50px;
@@ -25,7 +25,7 @@ footer {
 }
 
 .footer-section h6 {
-  color: #fff;
+  color: #000000;
   font-size: 16px;
   margin-bottom: 15px;
   border-left: 3px solid #007BFF;
@@ -42,7 +42,7 @@ footer {
 }
 
 .footer-section ul li a {
-  color: #ccc;
+  color: #000000;
   text-decoration: none;
   transition: color 0.3s;
 }
@@ -62,7 +62,7 @@ footer {
 }
 
 .social-links a {
-  color: #ccc;
+  color: #000000;
   font-size: 24px;
   transition: color 0.3s;
 }
@@ -76,5 +76,6 @@ footer {
   padding: 15px;
   background-color: #0a0a0a;
   font-size: 14px;
-  color: #888;
+  color: #000000;
 }
+

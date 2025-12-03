@@ -93,30 +93,6 @@ header.site-header {
 
 
 
-/* === Penting/header.php === */
-.site-header {
-  background: #111;
-  color: #fff;
-  padding: 12px 0;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-}
-
-.header-inner {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 16px;
-}
-
-.site-brand {
-  color: #fff;
-  font-size: 22px;
-  font-weight: 700;
-  text-decoration: none;
-}
-
 /* Navigasi utama */
 .nav ul {
   list-style: none;

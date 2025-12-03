@@ -1,98 +1,182 @@
 <?php
 session_start();
-error_reporting(0);
 include('penting/config.php');
 include('penting/format_rupiah.php');
 include('penting/library.php');
-if(strlen($_SESSION['ulogin'])==0){ 
-	header('location:index.php');
-	exit();
+
+/* ------ CEK LOGIN ------ */
+if (!isset($_SESSION['ulogin'])) {
+    header("location:index.php");
+    exit();
+}
+
+/* ------ CEK KODE BOOKING ------ */
+if (!isset($_GET['kode'])) {
+    die("Kode booking tidak ditemukan.");
 }
 
 $kode = $_GET['kode'];
-$sql = "SELECT booking.*, baju.*, jenis.* 
-		FROM booking 
-		JOIN baju ON booking.id_baju = baju.id_baju 
-		JOIN jenis ON baju.id_jenis = jenis.id_jenis 
-		WHERE booking.kode_booking = '$kode'";
+
+/* ------ QUERY DETAIL BOOKING ------ */
+$sql = "SELECT booking.*, baju.*, jenis.*
+        FROM booking
+        JOIN baju ON booking.id_baju = baju.id_baju
+        JOIN jenis ON baju.id_jenis = jenis.id_jenis
+        WHERE booking.kode_booking = '$kode'";
+
 $query = mysqli_query($koneksidb, $sql);
-$result = mysqli_fetch_array($query);
 
-$harga = $result['harga'];
-$durasi = $result['durasi'];
-$total = $durasi * $harga;
+if (!$query) {
+    die("SQL ERROR: " . mysqli_error($koneksidb));
+}
 
-$tglmulai = strtotime($result['tgl_mulai']);
-$tglbatas = date("Y-m-d", $tglmulai - 86400);
+$data = mysqli_fetch_array($query);
 
+if (!$data) {
+    die("Data booking tidak ditemukan.");
+}
+
+/* ------ AMBIL DATA ------ */
+$namaBaju  = $data['nama_baju'];
+$gambar    = $data['gambar1'];
+$tglMulai  = date('d-m-Y', strtotime($data['tgl_mulai']));
+$tglSelesai= date('d-m-Y', strtotime($data['tgl_selesai']));
+$durasi    = $data['durasi'];
+$total     = format_rupiah($durasi * $data['harga']);
 ?>
-<!DOCTYPE html>
-<html lang="id">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width,initial-scale=1.0">
-	<title>Detail Sewa - Busanara</title>
 
-	<link rel="stylesheet" href="assets/css/costum-style.css">
-	<link rel="stylesheet" href="assets/css/bookingdetail_style.css">
-	<script src="assets/js/custom-script.js" defer></script>
-</head>
-<body>
 
-<?php include('penting/header.php'); ?>
+<style>
+/* CARD UTAMA */
+.detail-card {
+    width: 100%;
+    max-width: 750px;
+    margin: 30px auto;
+    padding: 25px;
+    background: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    font-family: 'Segoe UI', sans-serif;
+}
+.detail-title {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+.label {
+    font-weight: 600;
+    margin-top: 12px;
+}
+.detail-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: #f9f9f9;
+    margin-top: 5px;
+}
+.box-info {
+    padding: 15px;
+    margin-top: 20px;
+    border-radius: 12px;
+}
+.box-warning {
+    background: #ffecec;
+    border-left: 6px solid #ff4c4c;
+}
+.box-safe {
+    background: #e8fff1;
+    border-left: 6px solid #35c76e;
+}
+.countdown {
+    font-size: 22px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+.btn-primary {
+    width: 100%;
+    padding: 15px;
+    background: #0077ff;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 18px;
+    margin-top: 25px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.btn-primary:hover {
+    background: #005fcc;
+}
+</style>
 
-<section class="detail-container">
-	<h2>Detail Sewa</h2>
-	<div class="detail-box">
-		<div class="form-group">
-			<label>Kode Sewa</label>
-			<input type="text" readonly value="<?php echo htmlentities($result['kode_booking']); ?>">
-		</div>
+<div class="detail-card">
+    <div class="detail-title">Detail Sewa</div>
 
-		<div class="form-group">
-			<label>Baju</label>
-			<input type="text" readonly value="<?php echo htmlentities($result['nama_baju']); ?>">
-		</div>
+    <div class="label">Kode Sewa</div>
+    <input class="detail-input" value="<?= $kode ?>" readonly>
 
-		<div class="form-group">
-			<label>Tanggal Mulai</label>
-			<input type="text" readonly value="<?php echo htmlentities(IndonesiaTgl($result['tgl_mulai'])); ?>">
-		</div>
+    <div class="label">Nama Baju</div>
+    <input class="detail-input" value="<?= $namaBaju ?>" readonly>
 
-		<div class="form-group">
-			<label>Tanggal Selesai</label>
-			<input type="text" readonly value="<?php echo htmlentities(IndonesiaTgl($result['tgl_selesai'])); ?>">
-		</div>
+    <img src="admin/img/baju/<?= $gambar ?>" 
+         style="width:180px; border-radius:10px; margin-top:15px">
 
-		<div class="form-group">
-			<label>Durasi</label>
-			<input type="text" readonly value="<?php echo $durasi . ' Hari'; ?>">
-		</div>
+    <div class="label">Tanggal Mulai</div>
+    <input class="detail-input" value="<?= $tglMulai ?>" readonly>
 
-		<div class="form-group">
-			<label>Biaya Sewa (<?php echo $durasi; ?> Hari)</label>
-			<input type="text" readonly value="<?php echo format_rupiah($total); ?>">
-		</div>
+    <div class="label">Tanggal Selesai</div>
+    <input class="detail-input" value="<?= $tglSelesai ?>" readonly>
 
-		<?php 
-		if($result['status']=="Menunggu Pembayaran"){
-			$sqlrek = "SELECT * FROM tblpages WHERE id='5'";
-			$queryrek = mysqli_query($koneksidb, $sqlrek);
-			$resultrek = mysqli_fetch_array($queryrek);
-		?>
-		<p class="note">
-			*Silahkan transfer total biaya sewa ke <?php echo $resultrek['detail']; ?> 
-			maksimal tanggal <?php echo IndonesiaTgl($tglbatas); ?>.
-		</p>
-		<?php } ?>
+    <div class="label">Durasi</div>
+    <input class="detail-input" value="<?= $durasi ?> Hari" readonly>
 
-		<button class="btn-cetak" onclick="window.open('detail_cetak.php?kode=<?php echo $kode; ?>','_blank')">
-			Cetak
-		</button>
-	</div>
-</section>
+    <div class="label">Total Biaya Sewa</div>
+    <input class="detail-input" value="<?= $total ?>" readonly>
 
-<?php include('penting/footer.php'); ?>
+    <div id="paymentBox" class="box-info box-warning">
+        <b>Batas Pembayaran:</b><br>
+        <span id="deadline"></span>
 
-</body>
-</html>
+        <div class="countdown" id="countdownText">Menghitung...</div>
+        <div id="expiredMessage" style="color:red; font-weight:bold; display:none;">
+            Waktu pembayaran telah habis!
+        </div>
+    </div>
+
+    <div class="box-info" style="background:#e9f4ff; border-left:6px solid #0077ff;">
+        Transfer ke:
+        <b>BCA | 1234567890 | BUSANARA STORE</b><br>
+        Setelah transfer, kirim bukti melalui menu konfirmasi.
+    </div>
+
+    <button class="btn-primary" onclick="window.location.href='user_fitur/riwayatsewa.php'">
+    Selanjutnya
+    </button>
+</div>
+
+<script>
+// HITUNG MUNDUR 20 MENIT
+let startTime = new Date().getTime();
+let deadline = startTime + (20 * 60 * 1000);
+
+document.getElementById("deadline").innerText =
+    new Date(deadline).toLocaleString();
+
+let timer = setInterval(function () {
+    let now = new Date().getTime();
+    let distance = deadline - now;
+
+    if (distance > 0) {
+        let minutes = Math.floor((distance % (1000*60*60)) / (1000*60));
+        let seconds = Math.floor((distance % (1000*60)) / 1000);
+
+        document.getElementById("countdownText").innerHTML =
+            minutes + " menit " + seconds + " detik";
+    } else {
+        clearInterval(timer);
+        document.getElementById("countdownText").style.display = "none";
+        document.getElementById("expiredMessage").style.display = "block";
+    }
+}, 1000);
+</script>

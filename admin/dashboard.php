@@ -25,8 +25,6 @@ $pagedesc = "Dashboard Administrator";
 
 <body>
 
-<?php include('includes/header.php'); ?>
-
 <div class="dashboard-layout">
 
     <!-- SIDEBAR KIRI -->
