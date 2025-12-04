@@ -117,6 +117,7 @@ textarea{ font-size:10px !important; }
                 <label>Deskripsi</label>
                 <div class="box-field" style="height:120px;"><textarea name="deskripsi" style="height:90px;"></textarea></div>
             </div>
+            
             <div style="width:40%;">
                 <label>Kategori</label>
                 <div class="box-field">

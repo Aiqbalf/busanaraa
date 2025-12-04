@@ -246,7 +246,13 @@ textarea{
             <div style="width:40%;">
                 <label>Kategori</label>
                 <div class="box-field">
-                    <input type="text" name="kategori" value="<?= $data['kategori'] ?>">
+                <select name="kategori" required>
+                    <option value="">-- Pilih Kategori --</option>
+                    <option value="anak laki-laki" <?= ($data['kategori']=='anak laki-laki') ? 'selected' : '' ?>>Anak Laki-laki</option>
+                    <option value="anak perempuan" <?= ($data['kategori']=='anak perempuan') ? 'selected' : '' ?>>Anak Perempuan</option>
+                    <option value="dewasa laki-laki" <?= ($data['kategori']=='dewasa laki-laki') ? 'selected' : '' ?>>Dewasa Laki-laki</option>
+                    <option value="dewasa perempuan" <?= ($data['kategori']=='dewasa perempuan') ? 'selected' : '' ?>>Dewasa Perempuan</option>
+                </select>
                 </div>
             </div>
         </div>
