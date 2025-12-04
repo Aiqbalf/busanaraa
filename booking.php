@@ -79,7 +79,7 @@ if(strlen($_SESSION['ulogin'])==0){
     <div class="booking-container">
       
       <div class="booking-left">
-        <img src="admin/img/baju/<?php echo htmlentities($result['gambar1']);?>" alt="Foto Baju">
+        <img src="admin/img/<?php echo htmlentities($result['gambar1']);?>" alt="Foto Baju">
         <h3><?php echo htmlentities($result['nama_baju']);?></h3>
         <p class="price"><?php echo htmlentities(format_rupiah($result['harga']));?> / Hari</p>
       </div>

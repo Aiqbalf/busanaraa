@@ -59,7 +59,7 @@ $pagedesc = "Beranda - Penyewaan Baju";
           <?php while ($result = mysqli_fetch_array($query)) : ?>
             <div class="product-listing-m gray-bg">
               <div class="product-listing-img">
-                <img src="../admin/img/baju/<?= htmlentities($result['gambar1']); ?>" alt="Baju" />
+                <img src="../admin/img/<?= htmlentities($result['gambar1']); ?>" alt="Baju" />
               </div>
               <div class="product-listing-content">
                 <h5><a href="baju_details.php?id=<?= htmlentities($result['id_baju']); ?>">

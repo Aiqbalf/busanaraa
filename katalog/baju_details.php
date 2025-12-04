@@ -30,9 +30,9 @@ $result = mysqli_fetch_array($query);
 
   <!-- ====== Gambar Produk ====== -->
   <div class="image-slider">
-    <img src="../admin/img/baju/<?= htmlentities($result['gambar1']); ?>" alt="">
-    <img src="../admin/img/baju/<?= htmlentities($result['gambar2']); ?>" alt="">
-    <img src="../admin/img/baju/<?= htmlentities($result['gambar3']); ?>" alt="">
+    <img src="../admin/img/<?= htmlentities($result['gambar1']); ?>" alt="">
+    <img src="../admin/img/<?= htmlentities($result['gambar2']); ?>" alt="">
+    <img src="../admin/img/<?= htmlentities($result['gambar3']); ?>" alt="">
   </div>
 
   <!-- ====== Info Produk ====== -->

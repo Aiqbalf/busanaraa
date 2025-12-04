@@ -119,7 +119,7 @@ $total     = format_rupiah($durasi * $data['harga']);
     <div class="label">Nama Baju</div>
     <input class="detail-input" value="<?= $namaBaju ?>" readonly>
 
-    <img src="admin/img/baju/<?= $gambar ?>" 
+    <img src="admin/img/<?= $gambar ?>" 
          style="width:180px; border-radius:10px; margin-top:15px">
 
     <div class="label">Tanggal Mulai</div>
