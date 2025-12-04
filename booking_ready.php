@@ -134,7 +134,7 @@ $totalsewa  = $durasi * $harga;
 
       <!-- ========== BAGIAN KIRI ========== -->
       <div class="left-side">
-        <img src="admin/img/baju/<?php echo $result['gambar1']; ?>" alt="Baju">
+        <img src="admin/img/<?php echo $result['gambar1']; ?>" alt="Baju">
         <h4><?php echo htmlentities($result['nama_baju']); ?></h4>
         <p class="price"><?php echo htmlentities(format_rupiah($harga)); ?> / Hari</p>
       </div>

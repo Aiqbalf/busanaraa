@@ -26,20 +26,20 @@ $pagedesc = "Kelola Data Baju";
       padding: 25px;
     }
 
-.page-title {
-  font-size: 28px;
-  font-weight: 700;
-  color: #2c2c2c;
-  margin-bottom: 5px;
-  margin-left: 35px;
-}
+    .page-title {
+      font-size: 28px;
+      font-weight: 700;
+      color: #2c2c2c;
+      margin-bottom: 5px;
+      margin-left: 35px;
+    }
 
-.page-subtitle {
-  font-size: 14px;
-  color: #6b6b6b;
-  margin-bottom: 20px;
-  margin-left: 35px;
-}
+    .page-subtitle {
+      font-size: 14px;
+      color: #6b6b6b;
+      margin-bottom: 20px;
+      margin-left: 35px;
+    }
 
     .box-header {
       background: #7d8189;
@@ -51,15 +51,15 @@ $pagedesc = "Kelola Data Baju";
     }
 
     .btn-tambah {
-        background: #3a8bc2;
-        color: white;
-        padding: 12px 28px;
-        font-weight: bold;
-        border-radius: 8px;
-        text-decoration: none;
-        font-size: 15px;
-        box-shadow: 0 3px 5px rgba(0,0,0,0.2);
-        margin-left: 13px;
+      background: #3a8bc2;
+      color: white;
+      padding: 12px 28px;
+      font-weight: bold;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 15px;
+      box-shadow: 0 3px 5px rgba(0,0,0,0.2);
+      margin-left: 13px;
     }
 
     .search-box {
@@ -109,6 +109,7 @@ $pagedesc = "Kelola Data Baju";
       height: 55px;
       object-fit: cover;
       border-radius: 5px;
+      border: 1px solid #ddd;
     }
 
     .btn-edit {
@@ -119,7 +120,6 @@ $pagedesc = "Kelola Data Baju";
       text-decoration: none;
       font-weight: bold;
     }
-
     .btn-edit:hover { background: #46a346; }
 
     .btn-hapus {
@@ -130,10 +130,8 @@ $pagedesc = "Kelola Data Baju";
       text-decoration: none;
       font-weight: bold;
     }
-
     .btn-hapus:hover { background: #c13a3a; }
   </style>
-
 </head>
 <body>
 
@@ -145,7 +143,6 @@ $pagedesc = "Kelola Data Baju";
   <div class="page-title">Kelola Data Baju</div>
   <div class="page-subtitle">Tambahkan koleksi baju barumu disini!!!</div>
 
-  <!-- AREA ATAS -->
   <div class="box-header">
     <a href="baju_tambah.php" class="btn-tambah">+ TAMBAH BAJU</a>
 
@@ -154,7 +151,6 @@ $pagedesc = "Kelola Data Baju";
     </div>
   </div>
 
-  <!-- TABLE -->
   <div class="table-wrapper">
     <table>
       <thead>
@@ -169,17 +165,38 @@ $pagedesc = "Kelola Data Baju";
       <tbody>
 
       <?php
+      // folder gambar YANG BENAR (karena file ini ada di folder admin)
+      $path = "img/";
+
       $sql = "SELECT * FROM baju ORDER BY id_baju DESC";
       $query = mysqli_query($koneksidb,$sql);
       $no = 1;
+
       while($row = mysqli_fetch_array($query)){
+
+          // fallback default
+          $foto = "default.jpg";
+
+          // cek file
+          if(!empty($row['gambar1']) && file_exists($path.$row['gambar1'])){
+              $foto = $row['gambar1'];
+          } 
+          elseif(!empty($row['gambar2']) && file_exists($path.$row['gambar2'])){
+              $foto = $row['gambar2'];
+          } 
+          elseif(!empty($row['gambar3']) && file_exists($path.$row['gambar3'])){
+              $foto = $row['gambar3'];
+          }
       ?>
 
         <tr>
           <td><?= $no++; ?></td>
           <td><?= $row['nama_baju']; ?></td>
           <td><?= format_rupiah($row['harga']); ?></td>
-          <td><img src="img/<?= $row['img']; ?>" class="img-baju"></td>
+
+          <!-- path benar: img/namafile -->
+          <td><img src="img/<?= $foto ?>" class="img-baju"></td>
+
           <td>
             <a href="edit_baju.php?id=<?= $row['id_baju']; ?>" class="btn-edit">UBAH</a>
             <a href="baju_hapus.php?id=<?= $row['id_baju']; ?>" class="btn-hapus" onclick="return confirm('Yakin ingin menghapus?')">HAPUS</a>
@@ -194,7 +211,6 @@ $pagedesc = "Kelola Data Baju";
 
 </div>
 
-<!-- === LIVE SEARCH JAVASCRIPT === -->
 <script>
 document.getElementById("searchInput").addEventListener("keyup", function() {
     let filter = this.value.toLowerCase();

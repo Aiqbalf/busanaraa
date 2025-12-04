@@ -52,7 +52,7 @@ $pagedesc = "Beranda - Penyewaan Baju";
         $query = mysqli_query($koneksidb, $sql);
         if ($query && mysqli_num_rows($query) > 0) {
           while ($results = mysqli_fetch_assoc($query)) {
-            $img = 'admin/img/baju/' . htmlspecialchars($results['gambar1']);
+            $img = 'admin/img/' . htmlspecialchars($results['gambar1']);
             $nama = htmlspecialchars($results['nama_baju']);
             $id = (int)$results['id_baju'];
             $harga = htmlspecialchars(format_rupiah($results['harga']));

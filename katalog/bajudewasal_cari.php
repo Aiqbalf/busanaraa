@@ -57,7 +57,7 @@ $pagedesc = "Baju Anak Laki-Laki - Penyewaan Baju";
     ?>
     <div class="product-card">
       <div class="product-image">
-        <img src="../admin/img/baju/<?= htmlentities($result['gambar1']); ?>" alt="Gambar Baju">
+        <img src="../admin/img/<?= htmlentities($result['gambar1']); ?>" alt="Gambar Baju">
       </div>
       <div class="product-info">
         <h3><a href="baju_details.php?id=<?= htmlentities($result['id_baju']); ?>"><?= htmlentities($result['nama_baju']); ?></a></h3>
