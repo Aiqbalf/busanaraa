@@ -43,7 +43,7 @@
         </li>
 
         <li>
-            <a href="reg-users.php">
+            <a href="member.php">
                 <span class="icon">👤</span>
                 <span class="text">Member</span>
             </a>
