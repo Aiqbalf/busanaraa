@@ -10,7 +10,7 @@ include('../penting/library.php');
 		$kode = $_POST['kode'];
 		$stt = "Menunggu Konfirmasi";
 
-		move_uploaded_file($_FILES["img1"]["tmp_name"],"image/bukti/".$newimg1);
+		move_uploaded_file($_FILES["img1"]["tmp_name"],"../image/bukti/".$newimg1);
 
 		$sql="UPDATE booking SET bukti_bayar='$newimg1', status='$stt' WHERE kode_booking='$kode'";
 		$lastInsertId = mysqli_query($koneksidb, $sql);

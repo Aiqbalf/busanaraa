@@ -50,7 +50,7 @@
         </li>
 
         <li>
-            <a href="manage-conactusquery.php">
+            <a href="pesanmasuk.php">
                 <span class="icon">✉</span>
                 <span class="text">Pesan Masuk</span>
             </a>

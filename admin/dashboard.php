@@ -145,7 +145,7 @@ $pagedesc = "Dashboard Administrator";
                 <div class="stat-text">
                     <span>Menghubungi</span>
                     <h2><?php echo $kontak; ?></h2>
-                    <a href="manage-conactusquery.php">Lihat Rincian</a>
+                    <a href="pesanmasuk.php">Lihat Rincian</a>
                 </div>
                 <div class="stat-icon">✉</div>
             </div>

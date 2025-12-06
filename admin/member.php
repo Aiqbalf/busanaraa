@@ -15,6 +15,7 @@ if (!isset($_SESSION['alogin']) || strlen($_SESSION['alogin']) == 0) {
     exit();
 }
 
+/* === HAPUS MEMBER === */
 if (isset($_GET['del'])) {
     $id = intval($_GET['del']);
     $del = $koneksidb->prepare("DELETE FROM member WHERE id_user = ?");
@@ -25,6 +26,7 @@ if (isset($_GET['del'])) {
     exit();
 }
 
+/* === AMBIL DATA MEMBER === */
 $sql = "SELECT id_user, nama_user, email, telp, alamat FROM member ORDER BY id_user DESC";
 $results = mysqli_query($koneksidb, $sql);
 $cnt = 1;
@@ -94,8 +96,8 @@ body { margin:0; padding:0; overflow-x:hidden; background:#f4f6f9; }
                     <td><?= htmlentities($row['telp']) ?></td>
                     <td><?= htmlentities($row['alamat']) ?></td>
                     <td style="text-align:center;">
-                        <a class="btn-action btn-edit" href="editmember.php?id=<?= $row['id_user'] ?>">Edit</a>
-                        <a class="btn-action btn-delete" onclick="return confirm('Hapus member ini?')" href="member.php?del=<?= $row['id_user'] ?>">Hapus</a>
+                        <a class="btn-action btn-edit" href="editmember.php?id=<?= $row['id_user'] ?>">Lihat</a>
+                        <a class="btn-action btn-delete" onclick="return confirm('Hapus member ini?')" href="member.php?del=<?= $row['id_user'] ?>">Blokir</a>
                     </td>
                 </tr>
                 <?php $cnt++; } ?>
