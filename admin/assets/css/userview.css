@@ -1,0 +1,370 @@
+/* Reset dan Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+/* Container utama */
+#section-to-print {
+    background-color: white;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 800px;
+    overflow: hidden;
+}
+
+/* Header dengan gradient */
+.modal-header {
+    background: linear-gradient(to right, #3498db, #2c3e50);
+    color: white;
+    padding: 25px 30px;
+    position: relative;
+}
+
+.modal-header h4 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.modal-header h4::before {
+    content: "👤";
+    font-size: 1.5rem;
+}
+
+.close {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 1.8rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    line-height: 1;
+    padding: 0;
+}
+
+.close:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: rotate(90deg);
+}
+
+/* Member profile header */
+.member-header {
+    display: flex;
+    align-items: center;
+    padding: 20px 30px;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #eaeaea;
+}
+
+.member-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #3498db, #2c3e50);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.2rem;
+    font-weight: bold;
+    margin-right: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.member-info h3 {
+    color: #2c3e50;
+    font-size: 1.6rem;
+    margin-bottom: 5px;
+}
+
+.member-info p {
+    color: #7f8c8d;
+    font-size: 1rem;
+}
+
+/* Form container */
+form#theform {
+    padding: 30px;
+}
+
+/* Form group styling */
+.form-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #f0f0f0;
+    position: relative;
+}
+
+.form-group:last-of-type {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.form-group label {
+    font-weight: 600;
+    color: #2c3e50;
+    font-size: 1rem;
+    width: 120px;
+    flex-shrink: 0;
+    margin-right: 20px;
+    text-align: right;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.form-group label::before {
+    font-size: 1.1rem;
+}
+
+.form-group:nth-child(1) label::before {
+    content: "👤"; /* Nama */
+}
+
+.form-group:nth-child(2) label::before {
+    content: "✉️"; /* Email */
+}
+
+.form-group:nth-child(3) label::before {
+    content: "📱"; /* Telepon */
+}
+
+.form-group:nth-child(4) label::before {
+    content: "📍"; /* Alamat */
+}
+
+.form-control {
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 12px 18px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background-color: #f9f9f9;
+    color: #333;
+    flex-grow: 1;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+    background-color: white;
+}
+
+textarea.form-control {
+    min-height: 100px;
+    resize: vertical;
+    font-family: inherit;
+    line-height: 1.5;
+}
+
+/* Input field dengan icon */
+.input-with-icon {
+    position: relative;
+    flex-grow: 1;
+}
+
+.input-with-icon::before {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #7f8c8d;
+    font-size: 1.1rem;
+    z-index: 1;
+}
+
+.input-with-icon:nth-child(1)::before {
+    content: "👤";
+}
+
+.input-with-icon:nth-child(2)::before {
+    content: "✉️";
+}
+
+.input-with-icon:nth-child(3)::before {
+    content: "📱";
+}
+
+.input-with-icon:nth-child(4)::before {
+    content: "📍";
+}
+
+.input-with-icon .form-control {
+    padding-left: 45px;
+}
+
+/* Footer */
+.modal-footer {
+    padding: 20px 30px;
+    background-color: #f8f9fa;
+    border-top: 1px solid #eaeaea;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.btn-default {
+    background: linear-gradient(to right, #95a5a6, #7f8c8d);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 28px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-default:hover {
+    background: linear-gradient(to right, #7f8c8d, #6c7b7d);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn-default:nth-child(1)::before {
+    content: "🖨️";
+}
+
+.btn-default:nth-child(2)::before {
+    content: "✕";
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .form-group {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .form-group label {
+        text-align: left;
+        margin-bottom: 10px;
+        width: 100%;
+    }
+    
+    .modal-header {
+        padding: 20px;
+    }
+    
+    .modal-header h4 {
+        font-size: 1.5rem;
+    }
+    
+    form#theform {
+        padding: 20px;
+    }
+    
+    .member-header {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .member-avatar {
+        margin-right: 0;
+        margin-bottom: 15px;
+    }
+    
+    .modal-footer {
+        flex-direction: column;
+    }
+    
+    .btn-default {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* Print styles */
+@media print {
+    #only-on-print {
+        display: block !important;
+        text-align: center;
+        margin-bottom: 30px;
+        color: #2c3e50;
+        border-bottom: 2px solid #3498db;
+        padding-bottom: 15px;
+    }
+    
+    #only-on-print h2 {
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
+    
+    #only-on-print p {
+        color: #666;
+        font-size: 14px;
+    }
+    
+    .modal-header, .modal-footer, .close, .member-header, .form-group label::before, .btn-default::before {
+        display: none !important;
+    }
+    
+    body {
+        background: white !important;
+        padding: 10px;
+    }
+    
+    #section-to-print {
+        box-shadow: none !important;
+        border: none;
+    }
+    
+    .form-group {
+        border-bottom: 1px solid #ddd;
+        margin-bottom: 15px;
+        padding-bottom: 15px;
+    }
+    
+    .form-group label {
+        font-weight: bold;
+        color: #000;
+    }
+    
+    .form-control {
+        background: none !important;
+        border: 1px solid #ccc;
+    }
+}
+
+#only-on-print {
+    display: none;
+}
+
+/* Efek hover untuk form groups */
+.form-group:hover {
+    background-color: #f8f9fa;
+    transition: background-color 0.3s ease;
+}

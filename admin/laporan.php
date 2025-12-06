@@ -1,336 +1,650 @@
 <?php
 session_start();
 error_reporting(0);
-include('includes/config.php');
-include('includes/format_rupiah.php');
-include('includes/library.php');
-if(strlen($_SESSION['alogin'])==0){
+include('penting/config.php');
+include('penting/format_rupiah.php');
+include('penting/library.php');
+
+if(strlen($_SESSION['alogin'])==0){	
     header('location:index.php');
-    exit;
+    exit();
 }
 
-// Nama page title
-$pagedesc = 'Laporan - Busanara';
-?>
+// Tanggal default
+$tgl_awal = date('Y-m-01');
+$tgl_akhir = date('Y-m-t');
+$filter_periode = 'bulan_ini';
 
-<!doctype html>
+// Proses filter jika ada submit
+if(isset($_POST['filter'])) {
+    $tgl_awal = $_POST['tgl_awal'];
+    $tgl_akhir = $_POST['tgl_akhir'];
+    $filter_periode = $_POST['filter_periode'];
+    
+    // Jika memilih periode cepat
+    if($filter_periode != 'custom') {
+        $today = date('Y-m-d');
+        switch($filter_periode) {
+            case 'hari_ini':
+                $tgl_awal = $today;
+                $tgl_akhir = $today;
+                break;
+            case 'kemarin':
+                $tgl_awal = date('Y-m-d', strtotime('-1 day'));
+                $tgl_akhir = $tgl_awal;
+                break;
+            case 'minggu_ini':
+                $tgl_awal = date('Y-m-d', strtotime('monday this week'));
+                $tgl_akhir = date('Y-m-d', strtotime('sunday this week'));
+                break;
+            case 'bulan_ini':
+                $tgl_awal = date('Y-m-01');
+                $tgl_akhir = date('Y-m-t');
+                break;
+            case 'bulan_lalu':
+                $tgl_awal = date('Y-m-01', strtotime('-1 month'));
+                $tgl_akhir = date('Y-m-t', strtotime('-1 month'));
+                break;
+            case 'tahun_ini':
+                $tgl_awal = date('Y-01-01');
+                $tgl_akhir = date('Y-12-31');
+                break;
+        }
+    }
+}
+
+// Query untuk data laporan
+$sql_laporan = "SELECT 
+                    b.*,
+                    bk.kode_booking,
+                    bk.tgl_mulai,
+                    bk.tgl_selesai,
+                    bk.durasi,
+                    bk.status,
+                    m.nama_user,
+                    m.email,
+                    j.nama_jenis,
+                    (bk.durasi * b.harga) as total
+                FROM booking bk
+                JOIN baju b ON bk.id_baju = b.id_baju
+                JOIN jenis j ON b.id_jenis = j.id_jenis
+                JOIN member m ON bk.email = m.email
+                WHERE bk.status IN ('Sudah Dibayar', 'Selesai')
+                AND DATE(bk.tgl_mulai) BETWEEN '$tgl_awal' AND '$tgl_akhir'
+                ORDER BY bk.tgl_mulai DESC";
+
+$query_laporan = mysqli_query($koneksidb, $sql_laporan);
+
+// Hitung total
+$total_pendapatan = 0;
+$total_transaksi = 0;
+$total_sewa = 0;
+
+while($row = mysqli_fetch_assoc($query_laporan)) {
+    $total_pendapatan += $row['total'];
+    $total_transaksi++;
+    $total_sewa += $row['durasi'];
+}
+
+// Reset pointer untuk iterasi berikutnya
+mysqli_data_seek($query_laporan, 0);
+?>
+<!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><?php echo $pagedesc;?></title>
-
-    <!-- Bootstrap 5 CDN -->
-
-     <link rel="stylesheet" href="assets/css/dashboard.css">
-	<link rel="stylesheet" href="assets/css/leftbar.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-
-	
-    [<style>
-        :root{
-            --sidebar-bg: #2E3440; /* biru sidebar */
-            --topbar-bg: #fff;
-            --card-bg: #fff;
-            --muted-bg: #f6f7fb;
+    <meta charset="UTF-8">
+    <title><?php echo $pagedesc; ?> - Laporan</title>
+    <link rel="stylesheet" href="assets/css/leftbar.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <style>
+        /* ========= BASIC PAGE STYLE ========= */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background: #f3f4f6;
+            color: #333;
+            display: flex;
+            min-height: 100vh;
         }
-        body{
-            background: var(--muted-bg);
-            font-family: Inter, ]system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+
+        /* ========= MAIN CONTENT CONTAINER ========= */
+        .main-content {
+            flex: 1;
+            margin-left: 220px;
+            padding: 20px;
+            width: calc(100% - 220px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
-        /* Sidebar */
-        .sidebar{
-            position: fixed;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 250px;
-            background: var(--sidebar-bg);
-            color: #fff;
-            padding-top: 18px;
-            box-shadow: 2px 0 8px rgba(0,0,0,0.08);
+
+        .content-wrapper {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
-        .sidebar .brand{
-            padding: 20px 18px;
-            font-weight: 700;
+
+        .page-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            text-align: center;
+            width: 100%;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #3498db;
+        }
+
+        /* ========= STATS CARDS ========= */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            width: 100%;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+            text-align: center;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 14px;
+        }
+
+        /* ========= FILTER SECTION ========= */
+        .filter-container {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            width: 100%;
+            margin-bottom: 30px;
+        }
+
+        .filter-title {
             font-size: 18px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
         }
-        .sidebar .nav-link{
-            color: rgba(255,255,255,0.9);
-            padding: 12px 18px;
-            border-radius: 8px;
-            margin: 4px 12px;
-        }
-        .sidebar .nav-link i{ width: 18px; }
-        .sidebar .nav-link:hover{ background: rgba(255,255,255,0.06); }
 
-        /* Topbar */
-        .topbar{
-            margin-left: 250px;
-            height: 62px;
-            background: var(--topbar-bg);
+        .filter-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            align-items: end;
+        }
+
+        .form-group {
             display: flex;
-            align-items: center;
-            padding: 0 22px;
-            border-bottom: 1px solid rgba(0,0,0,0.06);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.06);
-            z-index: 5;
-            position: sticky;
-            top: 0;
-        }
-        .content{
-            margin-left: 250px;
-            padding: 28px 48px;
+            flex-direction: column;
         }
 
-        /* Card style sesuai figma */
-        .card-filter{
-            background: var(--card-bg);
-            border-radius: 20px;
-            padding: 28px;
-            box-shadow: 0 12px 18px rgba(0,0,0,0.08);
-            border: 1px solid rgba(0,0,0,0.04);
+        .form-label {
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #555;
+            font-size: 14px;
         }
-        .card-filter .card-title{
+
+        .form-input,
+        .form-select {
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            background: white;
+            width: 100%;
+        }
+
+        .form-input:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+        }
+
+        .date-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: #3498db;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2980b9;
+        }
+
+        .btn-secondary {
+            background: #95a5a6;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #7f8c8d;
+        }
+
+        /* ========= TABLE SECTION ========= */
+        .table-container {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            min-width: 1000px;
+        }
+
+        table th {
+            background: #3498db;
+            color: white;
+            padding: 14px 12px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        table td {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        table tr:hover {
+            background-color: #f1f8ff;
+        }
+
+        /* ========= STATUS BADGES ========= */
+        .status-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .status-paid {
+            background: #d1f2eb;
+            color: #1d8348;
+        }
+
+        .status-completed {
+            background: #d4efdf;
+            color: #27ae60;
+        }
+
+        /* ========= ACTION BUTTONS ========= */
+        .action-buttons {
             display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 600;
-            color: #1f2937;
-        }
-        .icon-box{
-            width:36px; height:36px; border-radius:8px; background:#EEF2FF; display:flex; align-items:center; justify-content:center; color:#2563EB;
+            gap: 15px;
+            margin-top: 30px;
+            justify-content: center;
         }
 
-        label.small{ font-size: 13px; color: #374151; }
-        .muted-desc{ color:#6b7280; margin-bottom:18px; }
-
-        /* Tombol kanan bawah */
-        .btn-lihat{
-            border-radius:8px;
-            padding:8px 14px;
+        /* ========= EMPTY STATE ========= */
+        .empty-state {
+            text-align: center;
+            padding: 50px 20px;
+            color: #666;
         }
 
-        /* Responsive tweaks */
-        @media (max-width: 900px){
-            .sidebar{ width:72px; }
-            .content, .topbar{ margin-left:72px; }
-            .sidebar .brand span{ display:none; }
-            .sidebar .nav-link{ text-align:center; padding:10px; }
+        .empty-state p {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #888;
+        }
+
+        /* ========= RESPONSIVE ========= */
+        @media (max-width: 1024px) {
+            .main-content {
+                margin-left: 200px;
+                width: calc(100% - 200px);
+                padding: 15px;
+            }
+            
+            .filter-form {
+                grid-template-columns: 1fr;
+            }
+            
+            .date-inputs {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+                padding: 10px;
+            }
+            
+            .page-title {
+                font-size: 20px;
+            }
+            
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+            
+            table {
+                min-width: 800px;
+            }
+        }
+
+        /* ========= PRINT STYLES ========= */
+        @media print {
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+            }
+            
+            .filter-container,
+            .action-buttons {
+                display: none;
+            }
+            
+            .table-container {
+                box-shadow: none;
+                padding: 0;
+            }
+            
+            table {
+                border: 1px solid #000;
+            }
+            
+            table th {
+                background: #ccc !important;
+                color: #000 !important;
+                -webkit-print-color-adjust: exact;
+            }
         }
     </style>
-
-    <script>
-    function valid(){
-        // contoh validasi sederhana: kalau pake input date
-        const awal = document.forms['laporan'].awal.value;
-        const akhir = document.forms['laporan'].akhir.value;
-        if(awal && akhir && (akhir < awal)){
-            alert('Tanggal akhir harus lebih besar dari tanggal awal!');
-            return false;
-        }
-        return true;
-    }
-    </script>
 </head>
-
 <body>
 
-    <!-- SIDEBAR KIRI -->
+    <!-- Sidebar -->
     <?php include('penting/leftbar.php'); ?>
-    
-    <!-- Topbar -->
-    <header class="topbar">
-        <div style="flex:1">
-            <h5 style="margin:0">Dashboard Administrator</h5>
-        </div>
-        <div style="display:flex;align-items:center;gap:18px">
-            <div class="d-none d-md-block"><input class="form-control form-control-sm" style="width:240px;border-radius:999px;padding-left:12px" placeholder="Cari..."></div>
-            <div><i class="fa-regular fa-bell"></i></div>
-            <div style="display:flex;align-items:center;gap:10px">
-                <img src="img/user.png" alt="user" style="width:36px;height:36px;border-radius:999px;object-fit:cover">
-                <small class="text-muted">admin@busanara.com</small>
-            </div>
-        </div>
-    </header>
 
-    <main class="content">
-        <div class="mb-4">
-            <h3>Laporan</h3>
-            <p class="muted-desc">Lihat dan cetak laporan berdasarkan periode tertentu</p>
-        </div>
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="content-wrapper">
+            <h2 class="page-title">Laporan Sewa</h2>
 
-        <div class="card-filter">
-            <div class="card-title mb-3">
-                <div class="icon-box"><i class="fa fa-calendar-check"></i></div>
-                <div>Filter Periode Laporan</div>
-            </div>
-
-            <!-- Form pencarian laporan -->
-            <form name="laporan" method="get" onsubmit="return valid();">
-                <div class="row align-items-end gy-3">
-
-                    <div class="col-lg-6">
-                        <label class="small">Tanggal Awal</label>
-                        <div class="row g-2">
-                            <div class="col-4">
-                                <label class="small">Hari</label>
-                                <select name="awal_hari" class="form-select form-select-sm">
-                                    <?php for($d=1;$d<=31;$d++){ echo "<option value=\"".$d."\">$d</option>"; } ?>
-                                </select>
-                            </div>
-                            <div class="col-4">
-                                <label class="small">Bulan</label>
-                                <select name="awal_bulan" class="form-select form-select-sm">
-                                    <?php for($m=1;$m<=12;$m++){ echo "<option value=\"".$m."\">$m</option>"; } ?>
-                                </select>
-                            </div>
-                            <div class="col-4">
-                                <label class="small">Tahun</label>
-                                <select name="awal_tahun" class="form-select form-select-sm">
-                                    <?php 
-
-
-				$year = date('Y'); 
-				for($y = $year - 2; $y <= $year + 1; $y++) { 
- 				$selected = ($y == $year) ? 'selected' : '';
-    			echo "<option value=\"$y\" $selected>$y</option>"; 
-				}
-				?>
-
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-6">
-                        <label class="small">Tanggal Akhir</label>
-                        <div class="row g-2">
-                            <div class="col-4">
-                                <label class="small">Hari</label>
-                                <select name="akhir_hari" class="form-select form-select-sm">
-                                    <?php for($d=1;$d<=31;$d++){ echo "<option value=\"".$d."\">$d</option>"; } ?>
-                                </select>
-                            </div>
-                            <div class="col-4">
-                                <label class="small">Bulan</label>
-                                <select name="akhir_bulan" class="form-select form-select-sm">
-                                    <?php for($m=1;$m<=12;$m++){ echo "<option value=\"".$m."\">$m</option>"; } ?>
-                                </select>
-                            </div>
-                            <div class="col-4">
-                                <label class="small">Tahun</label>
-                                <select name="akhir_tahun" class="form-select form-select-sm">
-									<?php
-									
-									
-									
-					$year = date('Y'); 
-    				for($y = $year - 2; $y <= $year + 1; $y++) { 
-        			$selected = ($y == $year) ? 'selected' : '';
-        			echo "<option value=\"$y\" $selected>$y</option>"; 
-    				}
-    				?>	
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-12 text-end">
-                        <button type="submit" name="submit" class="btn btn-primary btn-lihat"><i class="fa fa-file-lines me-2"></i> Lihat Laporan</button>
-                    </div>
+            <!-- Stats Cards -->
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-icon" style="color: #3498db;">💰</div>
+                    <div class="stat-value"><?php echo format_rupiah($total_pendapatan); ?></div>
+                    <div class="stat-label">Total Pendapatan</div>
                 </div>
-            </form>
-        </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon" style="color: #2ecc71;">📊</div>
+                    <div class="stat-value"><?php echo $total_transaksi; ?></div>
+                    <div class="stat-label">Total Transaksi</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon" style="color: #e74c3c;">👕</div>
+                    <div class="stat-value"><?php echo $total_sewa; ?></div>
+                    <div class="stat-label">Total Hari Sewa</div>
+                </div>
+            </div>
 
-        <!-- Hasil laporan -->
-        <?php
-        if(isset($_GET['submit'])){
-            // ambil tanggal dari dropdown
-            $awal = sprintf('%04d-%02d-%02d', intval($_GET['awal_tahun']), intval($_GET['awal_bulan']), intval($_GET['awal_hari']));
-            $akhir = sprintf('%04d-%02d-%02d', intval($_GET['akhir_tahun']), intval($_GET['akhir_bulan']), intval($_GET['akhir_hari']));
+            <!-- Filter Section -->
+            <div class="filter-container">
+                <div class="filter-title">Filter Laporan</div>
+                <form method="POST" class="filter-form">
+                    <div class="form-group">
+                        <label class="form-label">Pilih Periode</label>
+                        <select name="filter_periode" class="form-select" onchange="toggleCustomDate(this.value)">
+                            <option value="hari_ini" <?php echo $filter_periode == 'hari_ini' ? 'selected' : ''; ?>>Hari Ini</option>
+                            <option value="kemarin" <?php echo $filter_periode == 'kemarin' ? 'selected' : ''; ?>>Kemarin</option>
+                            <option value="minggu_ini" <?php echo $filter_periode == 'minggu_ini' ? 'selected' : ''; ?>>Minggu Ini</option>
+                            <option value="bulan_ini" <?php echo $filter_periode == 'bulan_ini' ? 'selected' : ''; ?>>Bulan Ini</option>
+                            <option value="bulan_lalu" <?php echo $filter_periode == 'bulan_lalu' ? 'selected' : ''; ?>>Bulan Lalu</option>
+                            <option value="tahun_ini" <?php echo $filter_periode == 'tahun_ini' ? 'selected' : ''; ?>>Tahun Ini</option>
+                            <option value="custom" <?php echo $filter_periode == 'custom' ? 'selected' : ''; ?>>Custom Tanggal</option>
+                        </select>
+                    </div>
+                    
+                    <div class="date-inputs" id="customDateGroup" style="display: <?php echo $filter_periode == 'custom' ? 'grid' : 'none'; ?>">
+                        <div class="form-group">
+                            <label class="form-label">Tanggal Awal</label>
+                            <input type="text" name="tgl_awal" class="form-input datepicker" 
+                                   value="<?php echo $tgl_awal; ?>" placeholder="Pilih tanggal">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Tanggal Akhir</label>
+                            <input type="text" name="tgl_akhir" class="form-input datepicker" 
+                                   value="<?php echo $tgl_akhir; ?>" placeholder="Pilih tanggal">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <button type="submit" name="filter" class="btn btn-primary">
+                            <span>🔍</span> Tampilkan Laporan
+                        </button>
+                    </div>
+                </form>
+            </div>
 
-            // status yang ingin dimasukkan
-            $stt  = "Sudah Dibayar";
-            $stt1 = "Selesai";
-
-            // perbaikan logika SQL: gunakan kurung untuk operator OR
-            $sqlsewa = "SELECT * FROM booking WHERE (status='".mysqli_real_escape_string($koneksidb,$stt)."' OR status='".mysqli_real_escape_string($koneksidb,$stt1)."') AND tgl_booking BETWEEN '".mysqli_real_escape_string($koneksidb,$awal)."' AND '".mysqli_real_escape_string($koneksidb,$akhir)."' ORDER BY tgl_booking ASC";
-            $querysewa = mysqli_query($koneksidb,$sqlsewa);
-            
-            // tampilkan card hasil jika ada
-        ?>
-        <div class="card mt-4 p-3">
-            <div class="card-body">
-                <h5 class="card-title">Laporan Sewa</h5>
-                <p class="card-text">Periode: <strong><?php echo IndonesiaTgl($awal); ?></strong> sampai <strong><?php echo IndonesiaTgl($akhir); ?></strong></p>
-
-                <div class="table-responsive">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Kode Sewa</th>
-                                <th>Tanggal Sewa</th>
-                                <th>Total</th>
-                            </tr>
-                        </thead>
-                        <tbody>
+            <!-- Table Section -->
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Kode Sewa</th>
+                            <th>Baju</th>
+                            <th>Tanggal Mulai</th>
+                            <th>Tanggal Selesai</th>
+                            <th>Durasi</th>
+                            <th>Penyewa</th>
+                            <th>Status</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
                         <?php
-                            $no = 0;
-                            while($result = mysqli_fetch_array($querysewa)){
-                                $idbaju = $result['id_baju'];
-                                $sqlbaju = "SELECT * FROM baju WHERE id_baju='".mysqli_real_escape_string($koneksidb,$idbaju)."'";
-                                $querybaju = mysqli_query($koneksidb,$sqlbaju);
-                                $resultbaju = mysqli_fetch_array($querybaju);
-                                $total = intval($result['durasi']) * intval($resultbaju['harga']);
-                                $no++;
+                        $i = 0;
+                        if(mysqli_num_rows($query_laporan) > 0) {
+                            while ($row = mysqli_fetch_array($query_laporan)) {
+                                $i++;
+                                $statusClass = $row['status'] == 'Sudah Dibayar' ? 'status-paid' : 'status-completed';
+                        ?>
+                                <tr>
+                                    <td><?php echo $i; ?></td>
+                                    <td><strong><?php echo htmlspecialchars($row['kode_booking']); ?></strong></td>
+                                    <td style="text-align: left;"><?php echo htmlspecialchars($row['nama_baju']); ?></td>
+                                    <td><?php echo IndonesiaTgl(htmlspecialchars($row['tgl_mulai'])); ?></td>
+                                    <td><?php echo IndonesiaTgl(htmlspecialchars($row['tgl_selesai'])); ?></td>
+                                    <td><?php echo htmlspecialchars($row['durasi']); ?> hari</td>
+                                    <td><?php echo htmlspecialchars($row['nama_user']); ?></td>
+                                    <td>
+                                        <span class="status-badge <?php echo $statusClass; ?>">
+                                            <?php echo htmlspecialchars($row['status']); ?>
+                                        </span>
+                                    </td>
+                                    <td><strong><?php echo format_rupiah($row['total']); ?></strong></td>
+                                </tr>
+                        <?php 
+                            }
+                        } else { 
                         ?>
                             <tr>
-                                <td><?php echo $no; ?></td>
-                                <td><?php echo htmlentities($result['kode_booking']); ?></td>
-                                <td><?php echo IndonesiaTgl(htmlentities($result['tgl_booking'])); ?></td>
-                                <td><?php echo format_rupiah($total); ?></td>
+                                <td colspan="9" class="empty-state">
+                                    <div style="font-size: 48px; margin-bottom: 10px; color: #95a5a6;">📊</div>
+                                    <p>Tidak ada data laporan untuk periode ini</p>
+                                </td>
                             </tr>
-                        <?php } // end while ?>
-                        </tbody>
-                    </table>
+                        <?php } ?>
+                    </tbody>
+                </table>
+                
+                <?php if(mysqli_num_rows($query_laporan) > 0): ?>
+                <div class="summary" style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 6px;">
+                    <div style="display: flex; justify-content: space-between; font-weight: bold;">
+                        <span>Total Pendapatan Periode:</span>
+                        <span><?php echo format_rupiah($total_pendapatan); ?></span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-top: 5px; color: #666;">
+                        <span>Periode: <?php echo IndonesiaTgl($tgl_awal); ?> - <?php echo IndonesiaTgl($tgl_akhir); ?></span>
+                        <span><?php echo $total_transaksi; ?> transaksi</span>
+                    </div>
                 </div>
+                <?php endif; ?>
+            </div>
 
-
-
-
-
-
-
-
-
-
-                <div class="mt-3 text-end">
-                    <a href="laporan_cetak.php?awal=<?php echo $awal;?>&akhir=<?php echo $akhir;?>" target="_blank" class="btn btn-outline-primary">Cetak</a>
-                </div>
-
-
-
-
-
-				
-
-
-
-
-
-
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button onclick="window.print()" class="btn btn-secondary">
+                    <span>🖨️</span> Cetak Laporan
+                </button>
+                <a href="export_laporan.php?tgl_awal=<?php echo $tgl_awal; ?>&tgl_akhir=<?php echo $tgl_akhir; ?>" 
+                   class="btn btn-primary">
+                    <span>📥</span> Export Excel
+                </a>
             </div>
         </div>
-        <?php } // end if submit ?>
+    </div>
 
-    </main>
+    <!-- JavaScript Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/id.js"></script>
+    <script>
+        // Initialize date pickers
+        flatpickr(".datepicker", {
+            dateFormat: "Y-m-d",
+            locale: "id",
+            allowInput: true
+        });
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+        // Toggle custom date inputs
+        function toggleCustomDate(value) {
+            const customDateGroup = document.getElementById('customDateGroup');
+            if (value === 'custom') {
+                customDateGroup.style.display = 'grid';
+            } else {
+                customDateGroup.style.display = 'none';
+            }
+        }
+
+        // Set default dates based on quick filter
+        document.querySelector('select[name="filter_periode"]').addEventListener('change', function() {
+            const today = new Date();
+            let startDate, endDate;
+            
+            switch(this.value) {
+                case 'hari_ini':
+                    startDate = endDate = today.toISOString().split('T')[0];
+                    break;
+                case 'kemarin':
+                    const yesterday = new Date(today);
+                    yesterday.setDate(yesterday.getDate() - 1);
+                    startDate = endDate = yesterday.toISOString().split('T')[0];
+                    break;
+                case 'minggu_ini':
+                    const monday = new Date(today);
+                    monday.setDate(today.getDate() - today.getDay() + 1);
+                    const sunday = new Date(today);
+                    sunday.setDate(today.getDate() - today.getDay() + 7);
+                    startDate = monday.toISOString().split('T')[0];
+                    endDate = sunday.toISOString().split('T')[0];
+                    break;
+                case 'bulan_ini':
+                    startDate = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-01';
+                    const lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+                    endDate = lastDay.toISOString().split('T')[0];
+                    break;
+                case 'bulan_lalu':
+                    const lastMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+                    const lastMonthEnd = new Date(today.getFullYear(), today.getMonth(), 0);
+                    startDate = lastMonth.getFullYear() + '-' + String(lastMonth.getMonth() + 1).padStart(2, '0') + '-01';
+                    endDate = lastMonthEnd.toISOString().split('T')[0];
+                    break;
+                case 'tahun_ini':
+                    startDate = today.getFullYear() + '-01-01';
+                    endDate = today.getFullYear() + '-12-31';
+                    break;
+            }
+            
+            if (startDate && endDate && this.value !== 'custom') {
+                document.querySelectorAll('.datepicker').forEach(input => {
+                    input.value = this.value.includes('tgl_awal') ? startDate : endDate;
+                });
+            }
+        });
+
+        // Print functionality
+        function printReport() {
+            window.print();
+        }
+    </script>
 </body>
 </html>

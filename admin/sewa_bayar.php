@@ -1,43 +1,313 @@
 <?php
-include 'penting/config.php';
-include 'penting/format_rupiah.php';
 session_start();
+error_reporting(0);
+
+include('penting/config.php');
+include('penting/format_rupiah.php');
+include('penting/library.php');
+
+if (strlen($_SESSION['alogin']) == 0) {
+    header('location:index.php');
+    exit();
+}
 ?>
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sewa Menunggu Pembayaran</title>
+    <meta charset="UTF-8">
+    <title><?php echo $pagedesc; ?></title>
+    <link rel="stylesheet" href="assets/css/leftbar.css">
+    <style>
+        /* ========= BASIC PAGE STYLE ========= */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background: #f3f4f6;
+            color: #333;
+            display: flex;
+            min-height: 100vh;
+        }
 
-    <link rel="stylesheet" href="assets/css/dashboard.css" />
-    <link rel="stylesheet" href="assets/css/leftbar.css" />
+        /* ========= MAIN CONTENT CONTAINER ========= */
+        .main-content {
+            flex: 1;
+            margin-left: 220px; /* Lebar sidebar */
+            padding: 20px;
+            width: calc(100% - 220px);
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Pusatkan konten */
+        }
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+        .content-wrapper {
+            width: 100%;
+            max-width: 1200px; /* Batas maksimal lebar konten */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .page-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            text-align: center;
+            width: 100%;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #3498db;
+        }
+
+        /* ========= TABLE CONTAINER ========= */
+        .table-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        /* ========= TABLE STYLE ========= */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            min-width: 800px;
+        }
+
+        table th {
+            background: #3498db;
+            color: white;
+            padding: 10px 8px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        table td {
+            padding: 10px 8px;
+            border-bottom: 1px solid #eee;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        table tr:hover {
+            background-color: #f1f8ff;
+        }
+
+        /* ========= COLUMN WIDTH ========= */
+        table th:nth-child(1), /* No */
+        table td:nth-child(1) {
+            width: 50px;
+        }
+
+        table th:nth-child(2), /* Kode Sewa */
+        table td:nth-child(2) {
+            width: 100px;
+        }
+
+        table th:nth-child(3), /* Baju */
+        table td:nth-child(3) {
+            width: 200px;
+            text-align: left;
+            padding-left: 10px;
+        }
+
+        table th:nth-child(4), /* Tgl Mulai */
+        table th:nth-child(5), /* Tgl Selesai */
+        table td:nth-child(4),
+        table td:nth-child(5) {
+            width: 100px;
+        }
+
+        table th:nth-child(6), /* Total */
+        table td:nth-child(6) {
+            width: 120px;
+        }
+
+        table th:nth-child(7), /* Penyewa */
+        table td:nth-child(7) {
+            width: 100px;
+        }
+
+        table th:nth-child(8), /* Status */
+        table td:nth-child(8) {
+            width: 150px;
+        }
+
+        table th:nth-child(9), /* Aksi */
+        table td:nth-child(9) {
+            width: 80px;
+        }
+
+        /* ========= SEARCH BOX ========= */
+        .search-box {
+            margin-bottom: 20px;
+            width: 100%;
+            max-width: 1200px;
+            text-align: right;
+        }
+
+        .search-box input {
+            padding: 8px 12px;
+            width: 200px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 13px;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        /* ========= ACTION ICONS ========= */
+        .action-icons {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .action-icons a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            color: #333;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .action-icons a:hover {
+            background: #3498db;
+            color: white;
+        }
+
+        /* ========= LINKS ========= */
+        a[onclick*="openUserModal"] {
+            color: #2980b9;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        a[onclick*="openUserModal"]:hover {
+            text-decoration: underline;
+        }
+
+        /* ========= STATUS BADGE ========= */
+        .status-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            background: #f39c12;
+            color: white;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        /* ========= MODAL ========= */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            width: 90%;
+            max-width: 600px;
+            padding: 25px;
+            border-radius: 10px;
+            position: relative;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            cursor: pointer;
+            font-size: 20px;
+            color: #666;
+            background: none;
+            border: none;
+        }
+
+        /* ========= RESPONSIVE ========= */
+        @media (max-width: 1024px) {
+            .main-content {
+                margin-left: 200px;
+                width: calc(100% - 200px);
+                padding: 15px;
+            }
+            
+            .table-container {
+                padding: 15px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+                padding: 10px;
+            }
+            
+            .search-box {
+                text-align: center;
+            }
+            
+            .search-box input {
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            .page-title {
+                font-size: 20px;
+            }
+        }
+    </style>
 </head>
-
 <body>
 
-<?php include 'penting/leftbar.php'; ?>
+    <!-- Sidebar -->
+    <?php include('penting/leftbar.php'); ?>
 
-<div class="main-content">
-    <div class="container mt-4">
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="content-wrapper">
+            <h2 class="page-title">Sewa Menunggu Pembayaran</h2>
 
-        <h2 class="mb-3">Sewa Menunggu Pembayaran</h2>
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Cari data sewa...">
+            </div>
 
-        <div class="card p-3 shadow-sm">
-            <h4 class="mb-3">Daftar Sewa Menunggu Pembayaran</h4>
-
-            <div class="table-responsive">
-                <table class="table table-striped table-bordered align-middle">
-                    <thead class="table-dark">
+            <div class="table-container">
+                <table id="mainTable">
+                    <thead>
                         <tr>
                             <th>No</th>
                             <th>Kode Sewa</th>
                             <th>Baju</th>
-                            <th>Tgl. Mulai</th>
-                            <th>Tgl. Selesai</th>
+                            <th>Tgl Mulai</th>
+                            <th>Tgl Selesai</th>
                             <th>Total</th>
                             <th>Penyewa</th>
                             <th>Status</th>
@@ -47,88 +317,102 @@ session_start();
 
                     <tbody>
                     <?php
-                    $no = 1;
-                    $query = mysqli_query($koneksidb, "
-                        SELECT 
-                            cek_booking.id_cek,
-                            cek_booking.kode_booking,
-                            cek_booking.ukuran,
-                            booking.tgl_mulai,
-                            booking.tgl_selesai,
-                            booking.durasi,
-                            booking.email,
-                            baju.nama_baju
-                        FROM cek_booking
-                        LEFT JOIN booking ON cek_booking.kode_booking = booking.kode_booking
-                        LEFT JOIN baju ON cek_booking.id_baju = baju.id_baju
-                        WHERE cek_booking.status = 'menunggu pembayaran'
-                        ORDER BY cek_booking.id_cek DESC
-                    ");
+                    $i = 0;
+                    $sql = "SELECT booking.*, baju.*, jenis.*, member.*
+                            FROM booking 
+                            JOIN baju ON booking.id_baju = baju.id_baju
+                            JOIN jenis ON baju.id_jenis = jenis.id_jenis
+                            JOIN member ON booking.email = member.email
+                            WHERE status='Menunggu Pembayaran'
+                            ORDER BY booking.kode_booking DESC";
 
-                    while ($row = mysqli_fetch_assoc($query)) {
+                    $query = mysqli_query($koneksidb, $sql);
 
-                        // sementara total dihitung dari durasi × 10000 (ganti sesuai kebutuhanmu)
-                        $total_biaya = $row['durasi'] * 10000;
+                    while ($row = mysqli_fetch_array($query)) {
+                        $i++;
+                        $total = $row['durasi'] * $row['harga'];
                     ?>
                         <tr>
-                            <td><?= $no++; ?></td>
-                            <td><?= $row['kode_booking']; ?></td>
-                            <td><?= $row['nama_baju']; ?> (Uk: <?= $row['ukuran']; ?>)</td>
-                            <td><?= $row['tgl_mulai']; ?></td>
-                            <td><?= $row['tgl_selesai']; ?></td>
-                            <td><?= format_rupiah($total_biaya); ?></td>
-                            <td><?= $row['email']; ?></td>
-
-                            <td><span class="badge bg-warning text-dark">Menunggu</span></td>
+                            <td><?= $i ?></td>
+                            <td><strong><?= htmlentities($row['kode_booking']) ?></strong></td>
+                            <td style="text-align: left;"><?= htmlentities($row['nama_baju']) ?></td>
+                            <td><?= IndonesiaTgl($row['tgl_mulai']) ?></td>
+                            <td><?= IndonesiaTgl($row['tgl_selesai']) ?></td>
+                            <td><strong><?= format_rupiah($total) ?></strong></td>
                             <td>
-                                <button class="btn btn-sm btn-primary"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#bayar<?= $row['id_cek']; ?>">
-                                    Bayar
-                                </button>
+                                <a href="#" onclick="openUserModal('<?= $row['email'] ?>')">
+                                    <?= $row['nama_user'] ?>
+                                </a>
+                            </td>
+                            <td>
+                                <span class="status-badge"><?= $row['status'] ?></span>
+                            </td>
+                            <td>
+                                <div class="action-icons">
+                                    <a href="#" onclick="openDetailModal('<?= $row['kode_booking'] ?>')" title="Lihat Detail">👁</a>
+                                    <a href="sewaeditbayar.php?id=<?= $row['kode_booking'] ?>" title="Edit">✏</a>
+                                </div>
                             </td>
                         </tr>
-
-                        <!-- MODAL BAYAR -->
-                        <div class="modal fade" id="bayar<?= $row['id_cek']; ?>" tabindex="-1">
-                            <div class="modal-dialog modal-dialog-centered">
-                                <div class="modal-content">
-                                    <form method="POST" action="bayar_proses.php">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title">Pembayaran Sewa</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                        </div>
-
-                                        <div class="modal-body">
-
-                                            <input type="hidden" name="id_cek" value="<?= $row['id_cek']; ?>">
-
-                                            <p><strong>Kode Sewa:</strong> <?= $row['kode_booking']; ?></p>
-                                            <p><strong>Total Pembayaran:</strong> <?= format_rupiah($total_biaya); ?></p>
-
-                                            <label class="form-label">Bayar</label>
-                                            <input type="number" name="bayar" class="form-control" required>
-                                        </div>
-
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                                            <button type="submit" class="btn btn-success">Konfirmasi Pembayaran</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-
                     <?php } ?>
                     </tbody>
                 </table>
             </div>
         </div>
-
     </div>
-</div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- ========= MODAL ========= -->
+    <div class="modal" id="modalBox">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal()">✖</button>
+            <div id="modalContent">Loading...</div>
+        </div>
+    </div>
+
+    <script>
+        // SEARCH TABLE
+        document.getElementById("searchInput").addEventListener("keyup", function() {
+            let filter = this.value.toLowerCase();
+            let rows = document.querySelectorAll("#mainTable tbody tr");
+
+            rows.forEach(row => {
+                let text = row.textContent.toLowerCase();
+                row.style.display = text.includes(filter) ? "" : "none";
+            });
+        });
+
+        // OPEN MODAL DETAIL
+        function openDetailModal(kode) {
+            document.getElementById("modalBox").style.display = "flex";
+            fetch("sewaview.php?code=" + kode)
+                .then(res => res.text())
+                .then(html => {
+                    document.getElementById("modalContent").innerHTML = html;
+                });
+        }
+
+        // OPEN MODAL USER DETAIL
+        function openUserModal(email) {
+            document.getElementById("modalBox").style.display = "flex";
+            fetch("userview.php?code=" + email)
+                .then(res => res.text())
+                .then(html => {
+                    document.getElementById("modalContent").innerHTML = html;
+                });
+        }
+
+        function closeModal() {
+            document.getElementById("modalBox").style.display = "none";
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            let modal = document.getElementById('modalBox');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+    </script>
 
 </body>
 </html>

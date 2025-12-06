@@ -14,7 +14,7 @@ if(strlen($_SESSION['alogin'])==0){
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title><?php echo $pagedesc; ?> - Pengembalian</title>
+    <title><?php echo $pagedesc; ?> - Kelola Sewa</title>
     <link rel="stylesheet" href="assets/css/leftbar.css">
     <style>
         /* ========= BASIC PAGE STYLE ========= */
@@ -54,7 +54,77 @@ if(strlen($_SESSION['alogin'])==0){
             text-align: center;
             width: 100%;
             padding-bottom: 10px;
-            border-bottom: 2px solid #3498db; /* Warna hijau untuk pengembalian */
+            border-bottom: 2px solid #3498db; /* Warna ungu untuk kelola sewa */
+        }
+
+        /* ========= FILTER SECTION ========= */
+        .filter-section {
+            width: 100%;
+            max-width: 1200px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .filter-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            font-size: 13px;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 20px;
+            cursor: pointer;
+            color: #666;
+            transition: all 0.3s;
+        }
+
+        .filter-btn:hover {
+            background: #f8f9fa;
+            border-color: #3498db;
+        }
+
+        .filter-btn.active {
+            background: #3498db;
+            color: white;
+            border-color: #3498db;
+        }
+
+        /* ========= SEARCH BOX ========= */
+        .search-container {
+            position: relative;
+            width: 300px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 10px 15px;
+            padding-left: 40px;
+            font-size: 13px;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            background: white;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 5px rgba(155, 89, 182, 0.3);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
         }
 
         /* ========= TABLE CONTAINER ========= */
@@ -72,20 +142,20 @@ if(strlen($_SESSION['alogin'])==0){
             width: 100%;
             border-collapse: collapse;
             font-size: 14px;
-            min-width: 800px;
+            min-width: 1000px;
         }
 
         table th {
-            background: #3498db; /* Warna hijau untuk pengembalian */
+            background: #3498db; /* Warna ungu untuk kelola sewa */
             color: white;
-            padding: 10px 8px;
+            padding: 12px 10px;
             text-align: center;
             font-weight: bold;
             font-size: 14px;
         }
 
         table td {
-            padding: 10px 8px;
+            padding: 12px 10px;
             border-bottom: 1px solid #eee;
             text-align: center;
             vertical-align: middle;
@@ -96,7 +166,7 @@ if(strlen($_SESSION['alogin'])==0){
         }
 
         table tr:hover {
-            background-color: #e8f8f1; /* Hover warna hijau muda */
+            background-color: #f5eef8; /* Hover warna ungu muda */
         }
 
         /* ========= COLUMN WIDTH ========= */
@@ -112,7 +182,7 @@ if(strlen($_SESSION['alogin'])==0){
 
         table th:nth-child(3), /* Baju */
         table td:nth-child(3) {
-            width: 180px;
+            width: 200px;
             text-align: left;
             padding-left: 10px;
         }
@@ -121,7 +191,7 @@ if(strlen($_SESSION['alogin'])==0){
         table th:nth-child(5), /* Tgl Selesai */
         table td:nth-child(4),
         table td:nth-child(5) {
-            width: 110px;
+            width: 100px;
         }
 
         table th:nth-child(6), /* Total */
@@ -136,12 +206,12 @@ if(strlen($_SESSION['alogin'])==0){
 
         table th:nth-child(8), /* Status */
         table td:nth-child(8) {
-            width: 120px;
+            width: 150px;
         }
 
         table th:nth-child(9), /* Aksi */
         table td:nth-child(9) {
-            width: 180px;
+            width: 80px;
         }
 
         /* ========= NOTIFICATION ========= */
@@ -166,53 +236,28 @@ if(strlen($_SESSION['alogin'])==0){
 
         .notification.success {
             background: #eaffea;
-            border-left: 4px solid #27ae60;
+            border-left: 4px solid #2ecc71;
             color: #333;
         }
 
-        /* ========= ACTION ICONS ========= */
-        .action-buttons {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 8px;
-        }
-
+        /* ========= ACTION BUTTONS ========= */
         .action-btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            padding: 6px 12px;
+            width: 40px;
+            height: 32px;
+            background: #3498db;
             border-radius: 4px;
             color: white;
             text-decoration: none;
-            font-size: 12px;
-            font-weight: 500;
+            font-size: 14px;
             transition: all 0.2s;
-            border: none;
-            cursor: pointer;
-            white-space: nowrap;
         }
 
         .action-btn:hover {
-            opacity: 0.9;
+            background: #2980b9;
             transform: translateY(-2px);
-        }
-
-        .btn-detail {
-            background: #3498db;
-        }
-
-        .btn-user {
-            background: #9b59b6;
-        }
-
-        .btn-selesai {
-            background: #2ecc71;
-        }
-
-        .btn-hilang {
-            background: #e74c3c;
         }
 
         /* ========= USER LINK ========= */
@@ -236,10 +281,16 @@ if(strlen($_SESSION['alogin'])==0){
         /* ========= STATUS BADGES ========= */
         .status-badge {
             display: inline-block;
-            padding: 4px 12px;
+            padding: 6px 12px;
             border-radius: 12px;
             font-size: 12px;
             font-weight: bold;
+            min-width: 140px;
+        }
+
+        .status-waiting {
+            background: #ffeaa7;
+            color: #d35400;
         }
 
         .status-paid {
@@ -252,9 +303,14 @@ if(strlen($_SESSION['alogin'])==0){
             color: #27ae60;
         }
 
-        .status-lost {
+        .status-cancel {
             background: #fadbd8;
             color: #c0392b;
+        }
+
+        .status-confirm {
+            background: #aed6f1;
+            color: #1a5276;
         }
 
         /* ========= OVERDUE STYLING ========= */
@@ -339,6 +395,15 @@ if(strlen($_SESSION['alogin'])==0){
             .table-container {
                 padding: 15px;
             }
+            
+            .filter-section {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .search-container {
+                width: 100%;
+            }
         }
 
         @media (max-width: 768px) {
@@ -352,20 +417,21 @@ if(strlen($_SESSION['alogin'])==0){
                 font-size: 20px;
             }
             
-            .action-buttons {
-                flex-direction: column;
-                gap: 5px;
-            }
-            
-            .action-btn {
+            .filter-buttons {
                 width: 100%;
-                max-width: 140px;
-                margin: 0 auto;
-                padding: 8px 12px;
+                overflow-x: auto;
+                padding-bottom: 10px;
+                justify-content: flex-start;
             }
             
             table {
-                min-width: 700px;
+                min-width: 900px;
+            }
+            
+            .status-badge {
+                min-width: 120px;
+                font-size: 11px;
+                padding: 4px 8px;
             }
         }
 
@@ -388,7 +454,7 @@ if(strlen($_SESSION['alogin'])==0){
     <!-- Main Content -->
     <div class="main-content">
         <div class="content-wrapper">
-            <h2 class="page-title">Pengembalian Baju</h2>
+            <h2 class="page-title">Kelola Sewa</h2>
 
             <!-- Notifications -->
             <?php 
@@ -407,8 +473,26 @@ if(strlen($_SESSION['alogin'])==0){
             </div>
             <?php endif; ?>
 
+            <!-- Filter and Search Section -->
+            <div class="filter-section">
+                <div class="filter-buttons" id="filterButtons">
+                    <button class="filter-btn active" onclick="filterTable('all')">Semua</button>
+                    <button class="filter-btn" onclick="filterTable('Menunggu Konfirmasi')">Menunggu Konfirmasi</button>
+                    <button class="filter-btn" onclick="filterTable('Menunggu Pembayaran')">Menunggu Pembayaran</button>
+                    <button class="filter-btn" onclick="filterTable('Sudah Dibayar')">Sudah Dibayar</button>
+                    <button class="filter-btn" onclick="filterTable('Selesai')">Selesai</button>
+                    <button class="filter-btn" onclick="filterTable('Cancel')">Cancel</button>
+                </div>
+
+                <div class="search-container">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" class="search-input" id="searchInput" 
+                           placeholder="Cari kode sewa, baju, atau penyewa...">
+                </div>
+            </div>
+
             <div class="table-container">
-                <table id="mainTable">
+                <table id="sewaTable">
                     <thead>
                         <tr>
                             <th>No</th>
@@ -432,8 +516,7 @@ if(strlen($_SESSION['alogin'])==0){
                                     JOIN baju ON booking.id_baju = baju.id_baju
                                     JOIN jenis ON baju.id_jenis = jenis.id_jenis
                                     JOIN member ON booking.email = member.email 
-                                    WHERE status = 'Sudah Dibayar'
-                                    ORDER BY booking.tgl_selesai ASC, booking.kode_booking DESC";
+                                    ORDER BY booking.kode_booking DESC";
                         $querysewa = mysqli_query($koneksidb, $sqlsewa);
                         $num_rows = mysqli_num_rows($querysewa);
                         
@@ -441,10 +524,31 @@ if(strlen($_SESSION['alogin'])==0){
                             while ($result = mysqli_fetch_array($querysewa)) {
                                 $total = $result['durasi'] * $result['harga'];
                                 $tgl_selesai = $result['tgl_selesai'];
-                                $isOverdue = $today > $tgl_selesai;
+                                $isOverdue = $today > $tgl_selesai && $result['status'] == 'Sudah Dibayar';
                                 $i++;
+                                
+                                $statusClass = 'status-badge ';
+                                switch($result['status']) {
+                                    case 'Menunggu Konfirmasi':
+                                        $statusClass .= 'status-waiting';
+                                        break;
+                                    case 'Menunggu Pembayaran':
+                                        $statusClass .= 'status-waiting';
+                                        break;
+                                    case 'Sudah Dibayar':
+                                        $statusClass .= 'status-paid';
+                                        break;
+                                    case 'Selesai':
+                                        $statusClass .= 'status-completed';
+                                        break;
+                                    case 'Cancel':
+                                        $statusClass .= 'status-cancel';
+                                        break;
+                                    default:
+                                        $statusClass .= 'status-confirm';
+                                }
                         ?>
-                                <tr>
+                                <tr class="sewa-row" data-status="<?php echo htmlspecialchars($result['status']); ?>">
                                     <td><?php echo $i; ?></td>
                                     <td><strong><?php echo htmlspecialchars($result['kode_booking']); ?></strong></td>
                                     <td style="text-align: left;"><?php echo htmlspecialchars($result['nama_baju']); ?></td>
@@ -464,41 +568,15 @@ if(strlen($_SESSION['alogin'])==0){
                                         </a>
                                     </td>
                                     <td>
-                                        <?php 
-                                        $statusClass = 'status-badge status-paid';
-                                        if($result['status'] == 'Selesai') {
-                                            $statusClass = 'status-badge status-completed';
-                                        } elseif($result['status'] == 'Hilang/Rusak') {
-                                            $statusClass = 'status-badge status-lost';
-                                        }
-                                        ?>
                                         <span class="<?php echo $statusClass; ?>">
                                             <?php echo htmlspecialchars($result['status']); ?>
                                         </span>
                                     </td>
                                     <td>
-                                        <div class="action-buttons">
-                                            <a href="javascript:void(0)" onclick="showSewaModal('<?php echo $result['kode_booking']; ?>')" 
-                                               class="action-btn btn-detail" title="Lihat Detail">
-                                                👁 Detail
-                                            </a>
-                                            
-                                            <?php if($result['status'] == 'Sudah Dibayar'): ?>
-                                                <a href="selesai.php?id=<?php echo $result['kode_booking']; ?>" 
-                                                   class="action-btn btn-selesai" 
-                                                   onclick="return confirm('Apakah anda yakin akan menyelesaikan transaksi <?php echo $result['kode_booking']; ?>?');"
-                                                   title="Tandai Selesai">
-                                                    ✓ Selesai
-                                                </a>
-                                                
-                                                <a href="hilang.php?id=<?php echo $result['kode_booking']; ?>" 
-                                                   class="action-btn btn-hilang"
-                                                   onclick="return confirm('Apakah anda yakin akan mengubah status <?php echo $result['kode_booking']; ?> menjadi HILANG/RUSAK?');"
-                                                   title="Lapor Hilang/Rusak">
-                                                    ✗ Hilang/Rusak
-                                                </a>
-                                            <?php endif; ?>
-                                        </div>
+                                        <a href="javascript:void(0)" onclick="showSewaModal('<?php echo $result['kode_booking']; ?>')" 
+                                           class="action-btn" title="Lihat Detail">
+                                            👁
+                                        </a>
                                     </td>
                                 </tr>
                         <?php 
@@ -507,8 +585,8 @@ if(strlen($_SESSION['alogin'])==0){
                         ?>
                             <tr>
                                 <td colspan="9" class="empty-state">
-                                    <div style="font-size: 48px; margin-bottom: 10px; color: #27ae60;">✅</div>
-                                    <p>Semua sewa telah dikembalikan</p>
+                                    <div style="font-size: 48px; margin-bottom: 10px; color: #9b59b6;">📋</div>
+                                    <p>Belum ada data sewa</p>
                                 </td>
                             </tr>
                         <?php } ?>
@@ -574,12 +652,48 @@ if(strlen($_SESSION['alogin'])==0){
         document.getElementById(modalId).style.display = 'none';
     }
     
+    // Filter tabel berdasarkan status
+    function filterTable(status) {
+        const rows = document.querySelectorAll('.sewa-row');
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        
+        // Update active button
+        filterButtons.forEach(btn => {
+            btn.classList.remove('active');
+        });
+        event.target.classList.add('active');
+        
+        // Filter rows
+        rows.forEach(row => {
+            if(status === 'all' || row.getAttribute('data-status') === status) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    }
+    
+    // Search functionality
+    document.getElementById('searchInput').addEventListener('input', function() {
+        const filter = this.value.toLowerCase();
+        const rows = document.querySelectorAll('.sewa-row');
+        
+        rows.forEach(row => {
+            const text = row.textContent.toLowerCase();
+            if(text.includes(filter)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    });
+    
     // Close modal saat klik di luar konten
     window.onclick = function(event) {
         if(event.target.classList.contains('modal')) {
             event.target.style.display = 'none';
         }
-    }
+    };
     
     // Close dengan ESC key
     document.addEventListener('keydown', function(event) {
@@ -589,39 +703,19 @@ if(strlen($_SESSION['alogin'])==0){
         }
     });
 
-    // Konfirmasi untuk tombol Selesai dan Hilang/Rusak
+    // Initialize page
     document.addEventListener('DOMContentLoaded', function() {
-        const selesaiButtons = document.querySelectorAll('.btn-selesai');
-        const hilangButtons = document.querySelectorAll('.btn-hilang');
+        // Cek jika ada parameter status di URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const statusFilter = urlParams.get('status');
         
-        selesaiButtons.forEach(button => {
-            button.addEventListener('click', function(e) {
-                const kode = this.getAttribute('href').split('id=')[1];
-                if(!confirm(`Apakah anda yakin akan menyelesaikan transaksi ${kode}?`)) {
-                    e.preventDefault();
-                }
-            });
-        });
-        
-        hilangButtons.forEach(button => {
-            button.addEventListener('click', function(e) {
-                const kode = this.getAttribute('href').split('id=')[1];
-                if(!confirm(`Apakah anda yakin akan mengubah status ${kode} menjadi HILANG/RUSAK?`)) {
-                    e.preventDefault();
-                }
-            });
-        });
-    });
-
-    // Search functionality (jika ingin ditambahkan)
-    document.addEventListener('DOMContentLoaded', function() {
-        // Bisa ditambahkan search input nanti jika diperlukan
-        const table = document.getElementById('mainTable');
-        if(table) {
-            // Implementasi search bisa ditambahkan di sini
+        if(statusFilter) {
+            const filterButton = document.querySelector(`.filter-btn[onclick*="${statusFilter}"]`);
+            if(filterButton) {
+                filterButton.click();
+            }
         }
     });
     </script>
-
 </body>
 </html>
