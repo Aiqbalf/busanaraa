@@ -1,7 +1,7 @@
 <?php
 session_start();
 error_reporting(0);
-include('includes/config.php');
+include('penting/config.php');
 
 if(isset($_POST['send']))
 {
