@@ -5,51 +5,51 @@ include('penting/config.php');
 include('penting/format_rupiah.php');
 
 if(strlen($_SESSION['ulogin'])==0){ 
-	header('location:index.php');
+    header('location:index.php');
 }else{
-	$tglnow   = date('Y-m-d');
-	$tglmulai = strtotime($tglnow);
-	$jmlhari  = 86400*1;
-	$tglplus  = $tglmulai+$jmlhari;
-	$now = date("Y-m-d",$tglplus);
+    $tglnow   = date('Y-m-d');
+    $tglmulai = strtotime($tglnow);
+    $jmlhari  = 86400*1;
+    $tglplus  = $tglmulai+$jmlhari;
+    $now = date("Y-m-d",$tglplus);
 
-	if(isset($_POST['submit'])){
-		$fromdate=$_POST['fromdate'];
-		$todate=$_POST['todate'];
-		$id=$_POST['id'];
-		$pickup=$_POST['pickup'];
-		$ukuran=$_POST['ukuran'];
+    if(isset($_POST['submit'])){
+        $fromdate=$_POST['fromdate'];
+        $todate=$_POST['todate'];
+        $id=$_POST['id'];
+        $pickup=$_POST['pickup'];
+        $ukuran=$_POST['ukuran'];
 
-		$sql 	= "SELECT kode_booking FROM cek_booking 
-					WHERE tgl_booking BETWEEN '$fromdate' AND '$todate' 
-					AND id_baju='$id' AND ukuran='$ukuran' AND status!='Cancel'";
-		$query 	= mysqli_query($koneksidb,$sql);
-		$tersewa = mysqli_num_rows($query);
+        $sql   = "SELECT kode_booking FROM cek_booking 
+                    WHERE tgl_booking BETWEEN '$fromdate' AND '$todate' 
+                    AND id_baju='$id' AND ukuran='$ukuran' AND status!='Cancel'";
+        $query = mysqli_query($koneksidb,$sql);
+        $tersewa = mysqli_num_rows($query);
 
-		if($tersewa>0){
-			$sql2 	= "SELECT * FROM baju WHERE id_baju='$id'";
-			$query2 = mysqli_query($koneksidb,$sql2);
-			$res2 	= mysqli_fetch_array($query2);
-			$stok1 	= $res2[$ukuran];
+        if($tersewa>0){
+            $sql2   = "SELECT * FROM baju WHERE id_baju='$id'";
+            $query2 = mysqli_query($koneksidb,$sql2);
+            $res2   = mysqli_fetch_array($query2);
+            $stok1  = $res2[$ukuran];
 
-			if($tersewa<$stok1){
-				echo "<script>document.location = 'booking_ready.php?id=$id&mulai=$fromdate&selesai=$todate&pickup=$pickup&size=$ukuran';</script>";
-			}else{
-				echo "<script>alert('Baju tidak tersedia di tanggal yang anda pilih, silahkan pilih tanggal atau ukuran lain!');</script>";
-			}
-		}else{
-			$sql1 	= "SELECT * FROM baju WHERE id_baju='$id'";
-			$query1 = mysqli_query($koneksidb,$sql1);
-			$res1 	= mysqli_fetch_array($query1);
-			$stok 	= $res1[$ukuran];
+            if($tersewa<$stok1){
+                echo "<script>document.location = 'booking_ready.php?id=$id&mulai=$fromdate&selesai=$todate&pickup=$pickup&size=$ukuran';</script>";
+            }else{
+                echo "<script>alert('Baju tidak tersedia di tanggal yang anda pilih, silahkan pilih tanggal atau ukuran lain!');</script>";
+            }
+        }else{
+            $sql1   = "SELECT * FROM baju WHERE id_baju='$id'";
+            $query1 = mysqli_query($koneksidb,$sql1);
+            $res1   = mysqli_fetch_array($query1);
+            $stok   = $res1[$ukuran];
 
-			if($stok>0){
-				echo "<script>document.location = 'booking_ready.php?id=$id&mulai=$fromdate&selesai=$todate&pickup=$pickup&size=$ukuran';</script>";
-			}else{
-				echo "<script>alert('Baju tidak tersedia di tanggal yang anda pilih, silahkan pilih tanggal atau ukuran lain!');</script>";
-			}
-		}
-	}
+            if($stok>0){
+                echo "<script>document.location = 'booking_ready.php?id=$id&mulai=$fromdate&selesai=$todate&pickup=$pickup&size=$ukuran';</script>";
+            }else{
+                echo "<script>alert('Baju tidak tersedia di tanggal yang anda pilih, silahkan pilih tanggal atau ukuran lain!');</script>";
+            }
+        }
+    }
 }
 ?>
 
@@ -85,15 +85,15 @@ if(strlen($_SESSION['ulogin'])==0){
       </div>
 
       <div class="booking-right">
-        <form method="post" name="sewa" onsubmit="return validasiForm()">
+        <form method="post" name="sewa">
           <input type="hidden" name="id" value="<?php echo $id;?>">
           <input type="hidden" name="now" value="<?php echo $now;?>">
 
           <label>Tanggal Mulai</label>
-          <input type="date" name="fromdate" required>
+          <input type="date" name="fromdate" id="fromdate" required min="<?php echo $now; ?>">
 
           <label>Tanggal Selesai</label>
-          <input type="date" name="todate" required>
+          <input type="date" name="todate" id="todate" required>
 
           <label>Ukuran</label>
           <select name="ukuran" required>
@@ -119,5 +119,26 @@ if(strlen($_SESSION['ulogin'])==0){
   </section>
 
   <?php include('penting/footer.php'); ?>
+
+  <!-- ========================== -->
+  <!-- VALIDASI TANGGAL OTOMATIS -->
+  <!-- ========================== -->
+  <script>
+  document.addEventListener("DOMContentLoaded", function() {
+      let fromDate = document.getElementById("fromdate");
+      let toDate = document.getElementById("todate");
+
+      // Set min tanggal selesai = tanggal mulai
+      fromDate.addEventListener("change", function() {
+          toDate.min = this.value;
+
+          // Jika tanggal selesai lebih kecil dari tanggal mulai → perbaiki otomatis
+          if (toDate.value < this.value) {
+              toDate.value = this.value;
+          }
+      });
+  });
+  </script>
+
 </body>
 </html>

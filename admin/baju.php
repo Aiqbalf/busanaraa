@@ -121,16 +121,6 @@ $pagedesc = "Kelola Data Baju";
       font-weight: bold;
     }
     .btn-edit:hover { background: #46a346; }
-
-    .btn-hapus {
-      background: #e14b4b;
-      color: white;
-      padding: 8px 15px;
-      border-radius: 5px;
-      text-decoration: none;
-      font-weight: bold;
-    }
-    .btn-hapus:hover { background: #c13a3a; }
   </style>
 </head>
 <body>
@@ -199,7 +189,6 @@ $pagedesc = "Kelola Data Baju";
 
           <td>
             <a href="edit_baju.php?id=<?= $row['id_baju']; ?>" class="btn-edit">UBAH</a>
-            <a href="baju_hapus.php?id=<?= $row['id_baju']; ?>" class="btn-hapus" onclick="return confirm('Yakin ingin menghapus?')">HAPUS</a>
           </td>
         </tr>
 
