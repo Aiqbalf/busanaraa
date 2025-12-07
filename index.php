@@ -33,13 +33,13 @@ $pagedesc = "Beranda - Penyewaan Baju";
       <div class="banner-content">
         <h1>Cari Baju untuk acara spesial Anda?</h1>
         <p>Kami punya beberapa pilihan untuk Anda.</p>
-        <a href="bajuanakp.php" class="btn btn-primary">Selengkapnya <span class="arrow">➜</span></a>
+        <a href="#sewa" class="btn btn-primary">Selengkapnya <span class="arrow">➜</span></a>
       </div>
     </div>
   </section>
 
   <!-- Recent / Sewa Sekarang -->
-  <section class="section section-products">
+  <section id="sewa" class="section section-products">
     <div class="wrapper">
       <div class="section-header">
         <h2>Sewa Sekarang!</h2>

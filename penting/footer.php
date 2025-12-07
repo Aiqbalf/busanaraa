@@ -39,6 +39,10 @@
   </div>
 
   <div class="footer-bottom">
-    <p>© <?php echo date('Y'); ?> BUSANARA. All Rights Reserved.</p>
+    <p>
+                <a href="admin/index.php" class="admin-link">
+            © <?php echo date('Y'); ?> BUSANARA
+        </a>
+            </p>
   </div>
 </footer>

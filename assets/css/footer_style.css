@@ -49,3 +49,28 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* Styling untuk Tombol Admin Tersembunyi */
+.hidden-admin-btn {
+    /* Metode 1: Membuatnya tidak terlihat dan tidak bisa diklik */
+    /* display: none; */ 
+    
+    /* Metode 2: Menggesernya di luar layar (lebih baik untuk SEO/Aksesibilitas) */
+    position: absolute;
+    left: -9999px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    z-index: -1;
+    
+    /* Metode 3: Membuat titik kecil transparan di dalam footer-bottom */
+    /* position: absolute;
+    bottom: 0; 
+    right: 0;
+    width: 15px; 
+    height: 15px; 
+    cursor: pointer;
+    background: transparent; 
+    */
+}

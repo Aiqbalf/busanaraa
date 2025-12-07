@@ -71,7 +71,7 @@ $result = mysqli_fetch_array($query);
       $query1 = mysqli_query($koneksidb, $sql1);
       while ($r = mysqli_fetch_array($query1)) { ?>
         <div class="produk-item">
-          <img src="../admin/img/baju/<?= htmlentities($r['gambar1']); ?>" alt="">
+          <img src="../admin/img/<?= htmlentities($r['gambar1']); ?>" alt="">
           <h5><?= htmlentities($r['nama_baju']); ?></h5>
           <p><?= htmlentities(format_rupiah($r['harga'])); ?></p>
           <a href="baju_details.php?id=<?= $r['id_baju']; ?>" class="btn-lihat">Lihat Detail</a>
