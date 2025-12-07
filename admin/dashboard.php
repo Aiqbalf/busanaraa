@@ -40,29 +40,33 @@ $pagedesc = "Dashboard Administrator";
         </div>
 
         <!-- CHART CONTAINER -->
-<div class="charts-container" style="margin-bottom:25px; display:flex; gap:20px;">
+        <div style="
+            width:100%;
+            display:flex;
+            justify-content:center;
+            margin-top:25px;
+            margin-bottom:40px;
+        ">
+            <div style="
+                width:70%; 
+                background:white;
+                padding:25px;
+                border-radius:18px;  
+                box-shadow:0 4px 14px rgba(0,0,0,0.12);
+                text-align:center;  
+            ">
+                <h3 style="margin-bottom:15px;">Dashboard Penyewaan - Power BI</h3>
 
-    <div class="chart-box" style="
-        background:white; 
-        padding:20px; 
-        border-radius:15px; 
-        box-shadow:0 4px 12px rgba(0,0,0,0.1);
-        flex:1;">
-        <h3 style="margin-bottom:10px;">Top 5 Baju Paling Banyak Disewa</h3>
-        <canvas id="barChart"></canvas>
-    </div>
-
-    <div class="chart-box" style="
-        background:white; 
-        padding:20px; 
-        border-radius:15px; 
-        box-shadow:0 4px 12px rgba(0,0,0,0.1);
-        flex:1;">
-        <h3 style="margin-bottom:10px;">Penyewaan Baju per Bulan</h3>
-        <canvas id="lineChart"></canvas>
-    </div>
-
-</div>
+                <iframe title="POWER BI SMT 3 FINAL"
+                    src="https://app.powerbi.com/view?r=eyJrIjoiYjU5MGI1ZjctNTgwZS00YmUwLTg1N2EtYWY2MDNjYmIxYmVkIiwidCI6ImE2OWUxOWU4LWYwYTQtNGU3Ny1iZmY2LTk1NjRjODgxOWIxNCJ9"
+                    width="100%" 
+                    height="400" 
+                    frameborder="0" 
+                    style="border:0; border-radius:12px;"
+                    allowFullScreen="true">
+                </iframe>
+            </div>
+        </div>
 
 
         <?php
