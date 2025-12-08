@@ -16,7 +16,7 @@
     <!-- Informasi -->
     <div class="footer-section">
       <h6>Informasi</h6>
-      <p>Alamat: Yogyakarta, Indonesia</p>
+      <p>Alamat: Jember, Jawa Timur</p>
       <p>Email: support@busanara.com</p>
       <p>Telepon: +62 812-3456-7890</p>
     </div>
