@@ -1,6 +1,6 @@
 .footer {
-  background: #0d1b2a;
-  color: #fff;
+  background: #b7d7f8;
+  color: #252222;
   padding: 40px 0 0;
   margin-top: 50px;
   font-family: "Poppins", sans-serif;
@@ -18,11 +18,11 @@
   font-size: 16px;
   margin-bottom: 12px;
   font-weight: 600;
-  color: #4da3ff;
+  color: #191b1d;
 }
 
 .footer-section p {
-  color: #d0d0d0;
+  color: #201f1f;
   margin: 6px 0;
   line-height: 1.6;
   font-size: 14px;
@@ -34,7 +34,7 @@
   margin-top: 20px;
   border-top: 1px solid #1e2d3a;
   font-size: 14px;
-  color: #ccc;
+  color: #252020;
 }
 
 /* Responsif */

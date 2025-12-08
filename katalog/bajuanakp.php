@@ -116,7 +116,7 @@ $pagedesc = "Beranda - Penyewaan Baju";
                   <li class="gray-bg">
                     <div class="recent_post_img">
                       <a href="baju_details.php?id=<?= htmlentities($r['id_baju']); ?>">
-                        <img src="../admin/img/baju/<?= htmlentities($r['gambar1']); ?>" alt="Baju">
+                        <img src="../admin/img/<?= htmlentities($r['gambar1']); ?>" alt="Baju">
                       </a>
                     </div>
                     <div class="recent_post_title">

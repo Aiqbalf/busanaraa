@@ -9,6 +9,20 @@ $id = intval($_GET['id']);
 $sql = "SELECT baju.*, jenis.* FROM baju, jenis WHERE baju.id_jenis=jenis.id_jenis AND baju.id_baju='$id'";
 $query = mysqli_query($koneksidb, $sql);
 $result = mysqli_fetch_array($query);
+
+// ====== CEK APAKAH USER MEMILIKI TRANSAKSI MENUNGGU PEMBAYARAN ======
+$userHasPendingPayment = false;
+if (isset($_SESSION['ulogin']) && !empty($_SESSION['ulogin'])) {
+    $email = $_SESSION['ulogin'];
+    $checkPendingSQL = "SELECT COUNT(*) as total FROM booking WHERE email='$email' AND status='Menunggu Pembayaran'";
+    $checkQuery = mysqli_query($koneksidb, $checkPendingSQL);
+    if ($checkQuery) {
+        $pendingData = mysqli_fetch_assoc($checkQuery);
+        if ($pendingData['total'] > 0) {
+            $userHasPendingPayment = true;
+        }
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -54,8 +68,20 @@ $result = mysqli_fetch_array($query);
     <h4>Sewa Sekarang</h4>
     <form method="get" action="/busanara/booking.php">
       <input type="hidden" name="id" value="<?= $id; ?>">
-      <?php if ($_SESSION['ulogin']) { ?>
-        <button type="submit" class="btn-sewa">Sewa Sekarang</button>
+      <?php if (isset($_SESSION['ulogin']) && !empty($_SESSION['ulogin'])) { ?>
+        <?php if ($userHasPendingPayment) { ?>
+          <!-- Tampilkan tombol disabled jika ada transaksi menunggu pembayaran -->
+          <button type="button" class="btn-sewa disabled" disabled title="Anda memiliki transaksi yang belum dibayar. Silakan selesaikan pembayaran terlebih dahulu.">
+            Tidak Dapat Menyewa
+          </button>
+          <div class="alert-pending">
+            ⚠ Anda memiliki transaksi yang belum dibayar. 
+            <a href="riwayatsewa.php" class="link-riwayat">Lihat Riwayat Sewa</a>
+          </div>
+        <?php } else { ?>
+          <!-- Tampilkan tombol sewa normal jika tidak ada transaksi menunggu -->
+          <button type="submit" class="btn-sewa">Sewa Sekarang</button>
+        <?php } ?>
       <?php } else { ?>
         <a href="../login.php" class="btn-login">Login untuk Menyewa</a>
       <?php } ?>

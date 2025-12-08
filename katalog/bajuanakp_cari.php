@@ -108,7 +108,7 @@ $pagedesc = "Baju Anak Perempuan - Penyewaan Baju";
       while ($result = mysqli_fetch_array($query2)) { ?>
         <li>
           <a href="baju_details.php?id=<?= htmlentities($result['id_baju']); ?>">
-            <img src="../admin/img/baju/<?= htmlentities($result['gambar1']); ?>" alt="image">
+            <img src="../admin/img/<?= htmlentities($result['gambar1']); ?>" alt="image">
             <div>
               <p class="recent-title"><?= htmlentities($result['nama_baju']); ?></p>
               <p class="recent-price"><?= htmlentities(format_rupiah($result['harga'])); ?> / Hari</p>

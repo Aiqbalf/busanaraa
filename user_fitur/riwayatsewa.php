@@ -74,7 +74,9 @@ if(strlen($_SESSION['ulogin'])==0){
               <td><?php echo $result['status']; ?></td>
               <td class="opsi">
                 <a href="booking_detail.php?kode=<?php echo $result['kode_booking']; ?>" class="lihat">&#128065;</a>
-                <?php if($result['status'] != "Sudah Dibayar" && $result['status'] != "Selesai"){ ?>
+                
+                <!-- FIX: Hanya tampilkan upload bukti bayar jika status "Menunggu Pembayaran" -->
+                <?php if($result['status'] == "Menunggu Pembayaran"){ ?>
                   <a href="../booking_edit.php?kode=<?php echo $result['kode_booking']; ?>" class="upload">Upload Bukti Bayar</a>
                 <?php } ?>
               </td>
